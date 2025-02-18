@@ -9,9 +9,6 @@ export default function PartnerContract({ onBack }) {
     const handleBack = () => {
         onBack();
     }
-    const [data1, setData] = useState(JSON.parse(localStorage.getItem("restaurantData")));
-    console.log(data1.menuImg);
-
     const { formData } = useContext(SigninContext);
 
     const handleSubmit = async (e) => {

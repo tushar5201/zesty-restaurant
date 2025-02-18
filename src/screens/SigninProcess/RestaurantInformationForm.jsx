@@ -12,26 +12,18 @@ export default function RestaurantInformationForm({ onNext }) {
 
     const { formData, setFormData } = useContext(SigninContext);
 
-    const [ownerName, setOwnerName] = useState("");
-    const [restaurantName, setRestaurantName] = useState("");
     const [pincode, setPincode] = useState("");
-    const [shopNumber, setShopNumber] = useState("");
-    const [floor, setFloor] = useState("");
-    const [buildingName, setBuildingName] = useState("");
     const [area, setArea] = useState([]);
-    const [selectedArea, setSelectedArea] = useState("");
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [email, setEmail] = useState("");
-    const [mobile, setMobile] = useState("");
     const [workingDays, setWorkingDays] = useState([]);
+    const [logoImg, setLogoImg] = useState("");
+    const [latitude, setLatitude] = useState("");
+    const [longitude, setLongitude] = useState("");
 
     const handleCheckChange = (e) => {
         const value = e.target.value;
         const checked = e.target.checked;
 
         if (checked) {
-            // setFormData({ ...formData, "workingDays": [...workingDays, value] })
             setWorkingDays([...workingDays, value]);
         } else {
             setWorkingDays(workingDays.filter((e) => (e !== value)))
@@ -46,8 +38,6 @@ export default function RestaurantInformationForm({ onNext }) {
             try {
                 const res = await axios.get(`https://api.postalpincode.in/pincode/${pincode}`);
                 const data = res.data[0].PostOffice[0];
-                // setCity(data.District);
-                // setState(data.State);
                 setFormData({ ...formData, "city": data.District, "state": data.State });
 
                 for (let index = 0; index < res.data[0].PostOffice.length; index++) {
@@ -60,15 +50,32 @@ export default function RestaurantInformationForm({ onNext }) {
         }
     }
 
+    const handleLogo = (e) => {
+        setFormData({ ...formData, "logoImg": e.target.files[0] });
+        setLogoImg(e.target.files[0]);
+    }
+
+    const getLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                setLatitude(position.coords.latitude);
+                setLongitude(position.coords.longitude);
+                setFormData({ ...formData, "latitude": latitude, "longitude": longitude });
+            }, (err) => {
+                console.log(err.message);
+            })
+        }
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        localStorage.clear();
-        const restaurantData = { ownerName, restaurantName, pincode, shopNumber, floor, buildingName, selectedArea, city, state, email, mobile, workingDays };
-
-
-        localStorage.setItem("restaurantData", JSON.stringify(restaurantData));
-        handleContinue();
+        if (latitude === "" && longitude === "") {
+            toast.dark("Please allow to access location");
+            getLocation();
+        } else {
+            handleContinue();
+        }
     }
 
     return (
@@ -79,7 +86,6 @@ export default function RestaurantInformationForm({ onNext }) {
                     <h5>Basic Details</h5>
 
                     <div className="form-floating">
-                        {/* <input type="text" name="ownername" value={ownerName} onChange={(e) => setOwnerName(e.target.value)} placeholder="Owner's Full Name" className='in form-control' required /> */}
                         <input type="text" name="ownername" value={formData["ownerName"]} onChange={(e) => setFormData({ ...formData, "ownerName": e.target.value })} placeholder="Owner's Full Name" className='in form-control' required />
                         <label style={{ color: "#222" }}>Owner's Full Name</label>
                     </div>
@@ -88,6 +94,13 @@ export default function RestaurantInformationForm({ onNext }) {
                         <input type="text" name="restaurantName" value={formData["restaurantName"]} onChange={(e) => setFormData({ ...formData, "restaurantName": e.target.value })} placeholder="Restaurant Name" className='in form-control' required />
                         <label style={{ color: "#222" }}>Restaurant Name</label>
                     </div>
+
+                    <input type='file' name='logoImg' className='in form-control' placeholder='Name' onChange={handleLogo} /><br />
+                    {logoImg && (
+                        <div className="text-center">
+                            <img src={URL.createObjectURL(logoImg)} alt='carousel' height={'200px'} />
+                        </div>
+                    )}
 
                     <h5 className='mt-3'>Address Details</h5>
                     <div className="form-floating">

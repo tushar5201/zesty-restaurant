@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { Card, Carousel, CarouselCaption, CarouselItem, Col, Container, FloatingLabel, Form, Row } from "react-bootstrap";
+import { Carousel, CarouselItem, Col, Container, Row } from "react-bootstrap";
 import "../assets/css/login.css";
-import { toast } from "react-toastify"
 import LoginForm from "../components/LoginForm";
 import OTPForm from "../components/OTPForm";
-import Dashboard from "../Dashboard";
 
 const Login = () => {  
 
@@ -28,7 +26,6 @@ const Login = () => {
           <Col style={{ height: "100%", textAlign: "center", marginTop: "6%" }}>
             <img src=".\images\zesty-without-bg-black.png" alt="" style={{ width: "400px" }} />
 
-            {/* <h1 className="display-1" style={{ fontWeight: "500" }}>Zesty</h1> */}
             <p className="lead" style={{ color: "#000", marginTop: "-100px" }}>PARTNER WITH <strong>ZESTY!</strong></p>
 
             <img src="./images/stroke.svg" alt="" />

@@ -1,8 +1,7 @@
 import React, { useContext, useState } from 'react'
-import { Button, Card, Col, Form, Row, Table } from 'react-bootstrap';
+import { Card, Col, Form, Row, Table } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { SigninContext } from '../../context/signinContext';
-import axios from 'axios';
 
 export default function MenuSetup({ onNext, onBack }) {
 
@@ -13,9 +12,7 @@ export default function MenuSetup({ onNext, onBack }) {
     const { formData, setFormData } = useContext(SigninContext);
 
     const [selectedOption, setSelectedOption] = useState(null);
-    const [veg, setVeg] = useState("");
     const [menu1, setMenu] = useState([]);
-    const [data, setData] = useState(JSON.parse(localStorage.getItem("restaurantData")));
 
     const handleClick = (option) => {
         setSelectedOption(option);
@@ -33,12 +30,7 @@ export default function MenuSetup({ onNext, onBack }) {
             toast.error("Please select packaging charges")
         } else {
             setFormData({ ...formData, "menuImg": menu1, "payment": "Pending", "verified": "false" });
-
-            // const obj = Object.assign(data, { selectedOption, veg, menu1 });
-            // localStorage.clear();
-            // localStorage.setItem("restaurantData", JSON.stringify(obj));
             onNext();
-
         }
     }
 

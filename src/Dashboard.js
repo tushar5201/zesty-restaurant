@@ -12,7 +12,6 @@ const Dashboard = () => {
     <div className="container">
       {step === 1 && <PersonalDetails onNext={handleNext} />}
       {step === 2 && <RestaurantDetails onNext={handleNext} />}
-      {/* {step === 3 && <Timings />} */}
     </div>
   );
 };

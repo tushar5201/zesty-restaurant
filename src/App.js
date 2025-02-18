@@ -8,22 +8,10 @@ import PaymentSuccess, { PaymentFailed } from "./screens/SigninProcess/PaymentSt
 import { SigninProvider } from "./context/signinContext";
 
 const App = () => {
-  // const [step, setStep] = useState(1);
-  // const [user, setUser] = useState(null);
-
-  // const handleNext = (data) => {
-  //   setUser({ ...user, ...data });
-  //   setStep(step + 1);
-  // };
-
   return (
     <BrowserRouter>
       <div>
         <ToastContainer position="bottom-center" limit={1} />
-
-        {/* {step === 1 && <Login onNext={handleNext} />}
-        {step === 2 && <OTP phone={user} onNext={handleNext} />}
-        {step === 3 && <Dashboard />} */}
         <SigninProvider>
           <Routes>
             <Route path="/" element={<Login />} />

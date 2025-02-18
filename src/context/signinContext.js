@@ -6,7 +6,6 @@ const SigninContext = createContext();
 const SigninProvider = ({ children }) => {
     const [formData, setFormData] = useState([]);
     const [finalData, setFinalData] = useState([]);
-    // console.log(formData);
     
     const submitData = () => {
 

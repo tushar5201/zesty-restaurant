@@ -10,12 +10,6 @@ export default function RestaurantDocumentsForm({ onNext, onBack }) {
     }
     const { formData, setFormData } = useContext(SigninContext);
 
-    const [data, setData] = useState(JSON.parse(localStorage.getItem("restaurantData")));
-    const [pan, setPan] = useState("");
-    const [gstin, setGstin] = useState("");
-    const [ifsc, setIfsc] = useState("");
-    const [acno, setAcno] = useState("");
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -34,9 +28,6 @@ export default function RestaurantDocumentsForm({ onNext, onBack }) {
                 toast.error("Invalid IFSC Code");
             }
         } else {
-            const obj = Object.assign(data, { pan, gstin, ifsc, acno });
-            localStorage.clear();
-            localStorage.setItem("restaurantData", JSON.stringify(obj));
             onNext();
         }
     }
@@ -50,7 +41,6 @@ export default function RestaurantDocumentsForm({ onNext, onBack }) {
 
                     <div className="form-floating">
                         <input type="text" name="businesspan" value={formData["pan"]} onChange={(e) => setFormData({ ...formData, "pan": e.target.value.slice(0,10) })} placeholder="Business/Owner PAN" className='in form-control text-uppercase' required />
-                        {/* <input type="text" name="businesspan" value={pan} onChange={(e) => setPan(e.target.value.slice(0, 10))} placeholder="Business/Owner PAN" className='in form-control text-uppercase' required /> */}
                         <label style={{ color: "#222" }}>Business/Owner PAN </label>
                     </div>
 

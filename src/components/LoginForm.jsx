@@ -7,7 +7,6 @@ export default function LoginForm({ onNext }) {
     const [phone, setPhone] = useState("");
 
     const handleSubmit = async () => {
-        // if (phone) onNext({ contact: phone });
         try {
             if (phone === "") {
                 toast.error("Enter phone number");
@@ -25,13 +24,11 @@ export default function LoginForm({ onNext }) {
                 } else {
                     console.log(res);
                 }
-                // onNext({ contact: "6351650589", verificationId: "123456" });
             }
         } catch (error) {
             console.log(error);
 
         }
-        // onNext({ contact: phone });
     };
 
     const handleChange = (e) => {

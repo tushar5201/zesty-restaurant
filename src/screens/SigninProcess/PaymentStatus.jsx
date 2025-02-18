@@ -1,58 +1,46 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
-import { toast } from 'react-toastify';
-import { SigninContext } from '../../context/signinContext';
 
 export default function PaymentSuccess() {
-
-    // const { formData, setFormData } = useContext(SigninContext);
-    // console.log(formData);
-
-    // const [data1, setData] = useState(JSON.parse(localStorage.getItem("restaurantData")));
-    // console.log(data1);
-    // const obj = Object.assign(data1, { payment: "Done", verified: "false" });
-    // localStorage.clear();
-    // localStorage.setItem("restaurantData", JSON.stringify(obj));
-
     const [restaurant, setRestaurant] = useState(null);
+    const restaurantId = localStorage.getItem("restaurantId");
 
     useEffect(() => {
-        const handleSubmit = async () => {
-
-        }
-
         const fetchData = async () => {
             try {
-                const res = await axios.get(`/restaurant/get/${localStorage.getItem("restaurantId")}`);
+                const res = await axios.get(`https://zesty-backend.onrender.com/restaurant/get-menu-images/${restaurantId}`);
+                console.log(res.data);
+                
                 setRestaurant(res.data);
             } catch (error) {
                 console.error("Error fetching restaurant data:", error);
             }
         }
         fetchData();
-        // handleSubmit();
     }, []);
 
     return (
         <div>
-            <h2>Restaurant Menu</h2>
+            <h2 style={{color: "black"}}>Restaurant Menu</h2>
             {restaurant ? (
                 <div>
-                    <h3>{restaurant.restaurantName}</h3>
-                    <p>{restaurant.description}</p>
+                    {/* <h3 style={{color: "black"}}>{restaurant.restaurantName}</h3> */}
+                    {/* <p>{restaurant.description}</p> */}
 
                     <h4>Menu Images</h4>
                     <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                        {restaurant.menuImg.map((img, index) => (
+                        {restaurant.images.map((img, index) => (
                             <img
                                 key={index}
-                                src={`${img}`} // Adjust this URL as per your backend storage
+                                src={img.data} // Adjust this URL as per your backend storage
                                 alt="menu"
                                 width="150"
                                 height="200"
                                 style={{ borderRadius: "10px", boxShadow: "2px 2px 10px rgba(0,0,0,0.2)" }}
                             />
                         ))}
+
+                        <img src={`https://zesty-backend.onrender.com/restaurant/get-restaurant-logo/${restaurantId}`} alt="" width="150" height="200" />
                     </div>
                 </div>
             ) : (
