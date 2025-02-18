@@ -1,10 +1,32 @@
 import axios from 'axios';
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Card, Col, Form, Row } from 'react-bootstrap'
 import { toast } from 'react-toastify';
 import { SigninContext } from '../../context/signinContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function RestaurantInformationForm({ onNext }) {
+
+    const restaurantId = localStorage.getItem("restaurantId");
+    // console.log(restaurantId);
+    const navigate = useNavigate();
+
+    const checkPaymentStatus = async () => {
+        const res = await axios.get(`https://zesty-backend.onrender.com/restaurant/get/${restaurantId}`);
+
+        if (res.status === 200) {
+            console.log(res.data);
+            if (res.data.payment === "Success") {
+                navigate("/payment-success");
+            } else if(res.data.payment === "Pending") {
+                navigate("/payment-failure");
+            }
+        }
+    };
+
+    useEffect(() => {
+        checkPaymentStatus();
+    }, [restaurantId]);
 
     const handleContinue = () => {
         onNext();
@@ -16,8 +38,8 @@ export default function RestaurantInformationForm({ onNext }) {
     const [area, setArea] = useState([]);
     const [workingDays, setWorkingDays] = useState([]);
     const [logoImg, setLogoImg] = useState("");
-    const [latitude, setLatitude] = useState("");
-    const [longitude, setLongitude] = useState("");
+    const [latitude, setLatitude] = useState();
+    const [longitude, setLongitude] = useState();
 
     const handleCheckChange = (e) => {
         const value = e.target.value;
@@ -56,11 +78,12 @@ export default function RestaurantInformationForm({ onNext }) {
     }
 
     const getLocation = () => {
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
-                setLatitude(position.coords.latitude);
-                setLongitude(position.coords.longitude);
-                setFormData({ ...formData, "latitude": latitude, "longitude": longitude });
+                console.log(position.coords.latitude);
+                setFormData({ ...formData, "latitude": position.coords.latitude, "longitude": position.coords.longitude });
+                console.log(formData);
             }, (err) => {
                 console.log(err.message);
             })
@@ -71,9 +94,9 @@ export default function RestaurantInformationForm({ onNext }) {
         e.preventDefault();
 
         if (latitude === "" && longitude === "") {
-            toast.dark("Please allow to access location");
             getLocation();
         } else {
+            console.log(formData);
             handleContinue();
         }
     }

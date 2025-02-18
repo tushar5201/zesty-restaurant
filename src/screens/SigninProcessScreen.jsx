@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col, Container, Navbar, Row } from 'react-bootstrap'
 import "../assets/css/signinProcess.css"
 import { Box, Button, Step, StepContent, StepLabel, Stepper, Typography } from "@mui/material";
@@ -6,13 +6,24 @@ import RestaurantInformationForm from './SigninProcess/RestaurantInformationForm
 import RestaurantDocumentsForm from './SigninProcess/RestaurantDocumentsForm';
 import MenuSetup from './SigninProcess/MenuSetup';
 import PartnerContract from './SigninProcess/PartnerContract';
-import { SigninProvider } from '../context/signinContext';
-import PaymentSuccess, { PaymentFailed } from './SigninProcess/PaymentStatus';
+import { useNavigate } from 'react-router-dom';
 
 export default function SigninProcessScreen() {
 
     const [activeStep, setActiveStep] = useState(0);
     const [user, setUser] = useState(null);
+    // const restaurantId = JSON.stringify(localStorage.getItem("restaurantId"));
+    // // console.log(restaurantId);
+    
+    // const navigate = useNavigate();
+
+    // useEffect(() => {
+    //     if (restaurantId !== "" || restaurantId !== null) {
+    //         console.log(restaurantId);
+            
+    //         navigate("/payment-failure");
+    //     }
+    // }, []);
 
     const handleNext = (data) => {
         setUser({ ...user, ...data });

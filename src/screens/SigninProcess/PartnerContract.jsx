@@ -21,7 +21,7 @@ export default function PartnerContract({ onBack }) {
         }
 
         try {
-            const res = await axios.post("/payment/create-order", data);
+            const res = await axios.post("https://zesty-backend.onrender.com/payment/create-order", data);
             console.log(res.data);
 
 
@@ -37,7 +37,7 @@ export default function PartnerContract({ onBack }) {
                 }
             });
 
-            const res1 = await axios.post("/restaurant/register", restaurantData, {
+            const res1 = await axios.post("https://zesty-backend.onrender.com/restaurant/register", restaurantData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
 

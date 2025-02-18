@@ -1,27 +1,56 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export default function PaymentSuccess() {
     const [restaurant, setRestaurant] = useState(null);
     const restaurantId = localStorage.getItem("restaurantId");
+    const navigate = useNavigate();
+
+    const fetchData = async () => {
+        try {
+            const res = await axios.get(`https://zesty-backend.onrender.com/restaurant/get-menu-images/${restaurantId}`);
+            console.log(res.data);
+
+            setRestaurant(res.data);
+        } catch (error) {
+            console.error("Error fetching restaurant data:", error);
+        }
+    }
+
+    const updatePaymentStatus = async () => {
+        try {
+            const res = await axios.put(`https://zesty-backend.onrender.com/restaurant/update-payment-status/${restaurantId}`);
+            if (res.status === 200) {
+                console.log("status updated");
+            } else if (res.status === 401) {
+                console.log("error in updating");
+            } else if (res.status === 405) {
+                console.log("internal server error");
+            } else {
+                console.log("unknown error");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const checkVerified = async () => {
+        const res = await axios.get(`https://zesty-backend.onrender.com/restaurant/get/${restaurantId}`);        
+        if(res.data.verified === "true") {
+            navigate("/dashboard");
+        }
+    }
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await axios.get(`https://zesty-backend.onrender.com/restaurant/get-menu-images/${restaurantId}`);
-                console.log(res.data);
-                
-                setRestaurant(res.data);
-            } catch (error) {
-                console.error("Error fetching restaurant data:", error);
-            }
-        }
+        updatePaymentStatus();
+        checkVerified();
         fetchData();
-    }, []);
+    }, [restaurantId]);
 
     return (
         <div>
-            <h2 style={{color: "black"}}>Restaurant Menu</h2>
+            <h2 style={{ color: "black" }}>Restaurant Menu</h2>
             {restaurant ? (
                 <div>
                     {/* <h3 style={{color: "black"}}>{restaurant.restaurantName}</h3> */}
@@ -51,11 +80,6 @@ export default function PaymentSuccess() {
 }
 
 export function PaymentFailed() {
-    const data = JSON.parse(localStorage.getItem("restaurantData"));
-    const obj = Object.assign(data, { payment: "Pending" });
-    localStorage.clear();
-    localStorage.setItem("restaurantData", JSON.stringify(obj));
-
     return (
         <div>
             <h1>OOps !!</h1>
