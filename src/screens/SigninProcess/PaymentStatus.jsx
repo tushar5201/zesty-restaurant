@@ -58,7 +58,7 @@ export default function PaymentSuccess() {
 
                     <h4>Menu Images</h4>
                     <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                        {restaurant.images.map((img, index) => (
+                        {/* {restaurant.images.map((img, index) => (
                             <img
                                 key={index}
                                 src={img.data} // Adjust this URL as per your backend storage
@@ -69,7 +69,8 @@ export default function PaymentSuccess() {
                             />
                         ))}
 
-                        <img src={`https://zesty-backend.onrender.com/restaurant/get-restaurant-logo/${restaurantId}`} alt="" width="150" height="200" />
+                        <img src={`https://zesty-backend.onrender.com/restaurant/get-restaurant-logo/${restaurantId}`} alt="" width="150" height="200" /> */}
+                        <img src="/images/waiting.png" alt="" />
                     </div>
                 </div>
             ) : (

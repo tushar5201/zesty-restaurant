@@ -6,6 +6,9 @@ import { ToastContainer } from "react-toastify";
 import SigninProcessScreen from "./screens/SigninProcessScreen";
 import PaymentSuccess, { PaymentFailed } from "./screens/SigninProcess/PaymentStatus";
 import { SigninProvider } from "./context/signinContext";
+import Dashboard from "./screens/Dashboard";
+import MenuScreen from "./screens/MenuScreen";
+import AddMenuItem from "./controllers/MenuController";
 
 const App = () => {
   return (
@@ -18,6 +21,9 @@ const App = () => {
             <Route path="/signinProcess" element={<SigninProcessScreen />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/payment-failure" element={<PaymentFailed />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/restaurant/menu" element={<MenuScreen />} />
+            <Route path="/restaurant/add-menu-item" element={<AddMenuItem />} />
           </Routes>
         </SigninProvider>
       </div>
