@@ -56,8 +56,8 @@ export default function PaymentSuccess() {
                     {/* <h3 style={{color: "black"}}>{restaurant.restaurantName}</h3> */}
                     {/* <p>{restaurant.description}</p> */}
 
-                    <h4>Menu Images</h4>
-                    <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                    {/* <h4>Menu Images</h4> */}
+                    {/* <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}> */}
                         {/* {restaurant.images.map((img, index) => (
                             <img
                                 key={index}
@@ -70,8 +70,9 @@ export default function PaymentSuccess() {
                         ))}
 
                         <img src={`https://zesty-backend.onrender.com/restaurant/get-restaurant-logo/${restaurantId}`} alt="" width="150" height="200" /> */}
-                        <img src="/images/waiting.png" alt="" />
-                    </div>
+                        <img src="/images/waiting.png" alt="" height={"500px"} width={"500px"} />
+                        <h4>Your application is submitted to admin for verification</h4>
+                    {/* </div> */}
                 </div>
             ) : (
                 <p>Loading...</p>

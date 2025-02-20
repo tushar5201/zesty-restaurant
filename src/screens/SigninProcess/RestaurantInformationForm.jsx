@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function RestaurantInformationForm({ onNext }) {
     const restaurantId = localStorage.getItem("restaurantId");
-    console.log(restaurantId);
+    // console.log(restaurantId);
     const navigate = useNavigate();
 
     const checkPaymentStatus = async () => {
@@ -38,8 +38,8 @@ export default function RestaurantInformationForm({ onNext }) {
     const [area, setArea] = useState([]);
     const [workingDays, setWorkingDays] = useState([]);
     const [logoImg, setLogoImg] = useState("");
-    const [latitude, setLatitude] = useState();
-    const [longitude, setLongitude] = useState();
+    const [latitude, setLatitude] = useState("");
+    const [longitude, setLongitude] = useState("");
 
     const handleCheckChange = (e) => {
         const value = e.target.value;
@@ -78,12 +78,12 @@ export default function RestaurantInformationForm({ onNext }) {
     }
 
     const getLocation = () => {
-
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
-                console.log(position.coords.latitude);
+                setLatitude(position.coords.latitude);
+                setLongitude(position.coords.longitude);
                 setFormData({ ...formData, "latitude": position.coords.latitude, "longitude": position.coords.longitude });
-                console.log(formData);
+                onNext();
             }, (err) => {
                 console.log(err.message);
             })
@@ -95,16 +95,13 @@ export default function RestaurantInformationForm({ onNext }) {
 
         if (latitude === "" && longitude === "") {
             getLocation();
-        } else {
-            console.log(formData);
-            handleContinue();
         }
     }
 
     return (
         <div>
             <h4 style={{ width: "250px", color: "#000" }}><strong>Restaurant Information</strong></h4>
-            <Form onSubmit={handleSubmit}>
+            <Form>
                 <Card className='form-card'>
                     <h5>Basic Details</h5>
 
@@ -245,7 +242,7 @@ export default function RestaurantInformationForm({ onNext }) {
                 </Card>
 
 
-                <button type='submit' className='btn-continue'>Continue</button>
+                <button onClick={handleSubmit} className='btn-continue'>Continue</button>
             </Form>
         </div >
     )
