@@ -29,11 +29,11 @@ export default function OTPForm({ onNext, phone, id }) {
             } else {
                 const number = phone.contact;
                 const verificationId = id.verificationId;
-                const res = await fetch("/otp/validate-otp", {
+                const res = await fetch("https://zesty-backend.onrender.com/otp/validate-otp", {
                     method: "POST",
                     headers: { 'content-type': 'application/json' },
                     body: JSON.stringify({ number, verificationId, otp })
-                })
+                });
 
                 if (res.status === 200) {
                     navigate("/signinProcess");
@@ -48,6 +48,24 @@ export default function OTPForm({ onNext, phone, id }) {
 
         }
     }
+
+    const checkExist = async () => {
+        try {
+            const res = await axios.get(`https://zesty-backend.onrender.com/restaurant/check-exist/${phone.contact}`);
+            if(res.status === 200) {
+                console.log(res.data);
+                console.log(res.data.restaurantData._id);
+                localStorage.setItem("restaurantId", res.data.restaurantData._id);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        checkExist();
+    }, []);
+
     return (
         <div>
             <Card style={{ backgroundColor: "#fcf8f3", width: "500px", padding: "40px", marginTop: "30%", borderRadius: "20px" }}>

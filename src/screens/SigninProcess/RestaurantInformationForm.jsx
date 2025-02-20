@@ -6,9 +6,8 @@ import { SigninContext } from '../../context/signinContext';
 import { useNavigate } from 'react-router-dom';
 
 export default function RestaurantInformationForm({ onNext }) {
-
     const restaurantId = localStorage.getItem("restaurantId");
-    // console.log(restaurantId);
+    console.log(restaurantId);
     const navigate = useNavigate();
 
     const checkPaymentStatus = async () => {
@@ -18,14 +17,15 @@ export default function RestaurantInformationForm({ onNext }) {
             console.log(res.data);
             if (res.data.payment === "Success") {
                 navigate("/payment-success");
-            } else if(res.data.payment === "Pending") {
+            } else if (res.data.payment === "Pending") {
                 navigate("/payment-failure");
             }
         }
     };
 
     useEffect(() => {
-        checkPaymentStatus();
+        if (restaurantId != null)
+            checkPaymentStatus();
     }, [restaurantId]);
 
     const handleContinue = () => {

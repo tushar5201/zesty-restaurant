@@ -12,8 +12,8 @@ export default function AddMenuItem() {
     const [foodType, setFoodType] = useState("Veg");
     const [categories, setCategories] = useState([]);
     const [category, setCategory] = useState("");
-    const [price, setPrice] = useState("");
-    const [packagingCharge, setPackagingCharge] = useState("");
+    const [price, setPrice] = useState("0");
+    const [packagingCharge, setPackagingCharge] = useState("0");
     const [small, setSmall] = useState({ price: "", quantity: "" });
     const [medium, setMedium] = useState({ price: "", quantity: "" });
     const [large, setLarge] = useState({ price: "", quantity: "" });
@@ -37,11 +37,11 @@ export default function AddMenuItem() {
         menuItemData.append("restaurantId", restaurantId);
 
         try {
-            // const res = await axios.post("https://zesty-backend.onrender.com/menu/add-item", menuItemData, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true });
-            const res = await axios.post("/menu/add-item", menuItemData, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true });
+            const res = await axios.post("https://zesty-backend.onrender.com/menu/add-item", menuItemData, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true });
+            // const res = await axios.post("/menu/add-item", menuItemData, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true });
             if (res.status === 200) {
                 toast.dark("Menu Added");
-                navigate("/admin/menu");
+                navigate("/restaurant/menu");
             } else if (res.status === 405) {
                 toast.dark("menu saving failed");
             } else {
@@ -75,6 +75,9 @@ export default function AddMenuItem() {
 
     useEffect(() => {
         fetchCategories();
+    }, []);
+
+    useEffect(() => {
         setVariant({ ...variant, small: small, medium: medium, large: large });
     }, [small, medium, large]);
 
@@ -158,6 +161,16 @@ export default function AddMenuItem() {
                             <input type="number" name="charges" value={packagingCharge} onChange={(e) => setPackagingCharge(e.target.value)} id="name" placeholder='Packaging Charges' className='in form-control' style={{ width: "100%" }} />
                             <label style={{ color: "#222" }}>Packaging Charges</label>
                         </div>
+
+                        <Row>
+                            <Col>
+                                <h5>Final Price : </h5>
+                                <p>(Item price + packaging charge + zesty commision(30%))</p>
+                            </Col>
+                            <Col>
+                                <h4>{(parseInt(price) + parseInt(packagingCharge)) + (parseInt(price) + parseInt(packagingCharge))*0.3}</h4>
+                            </Col>
+                        </Row>
 
                         <Accordion>
                             <Accordion.Item eventKey='0'>
