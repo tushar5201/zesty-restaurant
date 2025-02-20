@@ -83,7 +83,6 @@ export default function RestaurantInformationForm({ onNext }) {
                 setLatitude(position.coords.latitude);
                 setLongitude(position.coords.longitude);
                 setFormData({ ...formData, "latitude": position.coords.latitude, "longitude": position.coords.longitude });
-                onNext();
             }, (err) => {
                 console.log(err.message);
             })
@@ -95,6 +94,8 @@ export default function RestaurantInformationForm({ onNext }) {
 
         if (latitude === "" && longitude === "") {
             getLocation();
+        } else {
+            onNext();
         }
     }
 
