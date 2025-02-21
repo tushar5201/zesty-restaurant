@@ -29,7 +29,7 @@ export default function MenuSetup({ onNext, onBack }) {
         if (selectedOption === null) {
             toast.error("Please select packaging charges")
         } else {
-            setFormData({ ...formData, "menuImg": menu1, "payment": "Pending", "verified": "false" });
+            setFormData({ ...formData, "menuImg": menu1, "payment": "Pending", "verified": "Pending" });
             onNext();
         }
     }

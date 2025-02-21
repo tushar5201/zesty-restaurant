@@ -36,9 +36,13 @@ export default function PaymentSuccess() {
     }
 
     const checkVerified = async () => {
-        const res = await axios.get(`https://zesty-backend.onrender.com/restaurant/get/${restaurantId}`);        
-        if(res.data.verified === "true") {
+        const res = await axios.get(`https://zesty-backend.onrender.com/restaurant/get/${restaurantId}`);   
+        if(res.data.verified === "Approved") {
             navigate("/dashboard");
+        } else if(res.data.verified === "Rejected") {
+            window.alert("Your application has been rejected please try again");
+            localStorage.removeItem("restaurantId");
+            navigate("/signinProcess");
         }
     }
 
@@ -50,9 +54,9 @@ export default function PaymentSuccess() {
 
     return (
         <div>
-            <h2 style={{ color: "black" }}>Restaurant Menu</h2>
+            {/* <h2 style={{ color: "black" }}>Restaurant Menu</h2> */}
             {restaurant ? (
-                <div>
+                <div className='text-center'>
                     {/* <h3 style={{color: "black"}}>{restaurant.restaurantName}</h3> */}
                     {/* <p>{restaurant.description}</p> */}
 
@@ -70,7 +74,7 @@ export default function PaymentSuccess() {
                         ))}
 
                         <img src={`https://zesty-backend.onrender.com/restaurant/get-restaurant-logo/${restaurantId}`} alt="" width="150" height="200" /> */}
-                        <img src="/images/waiting.png" alt="" height={"500px"} width={"500px"} />
+                        <img src="/images/zesty-without-bg-black.png" alt="" height={"500px"} width={"500px"} />
                         <h4>Your application is submitted to admin for verification</h4>
                     {/* </div> */}
                 </div>
