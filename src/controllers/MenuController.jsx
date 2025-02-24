@@ -24,13 +24,14 @@ export default function AddMenuItem() {
 
     const submitHandler = async (e) => {
 
+        const finalPrice = ((parseInt(price) + parseInt(packagingCharge)) + (parseInt(price) + parseInt(packagingCharge))*0.3).toString();
         const menuItemData = new FormData();
         menuItemData.append("name", name);
         menuItemData.append("description", description);
         menuItemData.append("image", image);
         menuItemData.append("foodType", foodType);
         menuItemData.append("category", category);
-        menuItemData.append("price", price);
+        menuItemData.append("price", finalPrice);
         menuItemData.append("packagingCharge", packagingCharge);
         menuItemData.append("variant", JSON.stringify(variant));
         menuItemData.append("addOnes", JSON.stringify(addOnes));
@@ -100,7 +101,7 @@ export default function AddMenuItem() {
                             <label style={{ color: "#222" }}>Item Description</label>
                         </div>
 
-                        <select name="" id="" className='in form-control' onChange={(e) => setCategory(e.target.value)}>
+                        <select name="" id="" className='in form-select' onChange={(e) => setCategory(e.target.value)}>
                             {categories.map((category) => (
                                 <option value={category.name}>{category.name}</option>
                             ))}

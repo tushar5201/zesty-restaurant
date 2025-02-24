@@ -9,6 +9,11 @@ import { SigninProvider } from "./context/signinContext";
 import Dashboard from "./screens/Dashboard";
 import MenuScreen from "./screens/MenuScreen";
 import AddMenuItem from "./controllers/MenuController";
+import OrderScreen from "./screens/OrderScreen";
+import AdsScreen from "./screens/AdsScreen";
+import OutletInfoScreen from "./screens/OutletInfo";
+import HelpCenterScreen from "./screens/HelpCenterScreen";
+import CreateAds from "./controllers/AdController";
 
 const App = () => {
   return (
@@ -24,6 +29,11 @@ const App = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/restaurant/menu" element={<MenuScreen />} />
             <Route path="/restaurant/add-menu-item" element={<AddMenuItem />} />
+            <Route path="/restaurant/orders" element={<OrderScreen />} />
+            <Route path="/restaurant/ads" element={<AdsScreen />} />
+            <Route path="/restaurant/create-ads" element={<CreateAds />} />
+            <Route path="/restaurant/info" element={<OutletInfoScreen />} />
+            <Route path="/restaurant/help" element={<HelpCenterScreen />} />
           </Routes>
         </SigninProvider>
       </div>

@@ -20,6 +20,11 @@ export default function Header() {
 
     const { toggleSidebar } = useContext(SidebarContext);
 
+    const handleLogout = () => {
+        localStorage.removeItem("restaurantName");
+        window.location.reload(true);
+    }
+
     return (
         <header className='navbar navbar-expand-lg justify-content-start'>
             <button className='sidebar-toggle' onClick={() => toggleSidebar()}>
@@ -42,7 +47,7 @@ export default function Header() {
                         <i class="fa-solid fa-gear" style={{ fontSize: "18px" }}></i>
                         Account Setting
                     </NavDropdown.Item>
-                    <NavDropdown.Item href='#' className='nav-link'>
+                    <NavDropdown.Item className='nav-link' onClick={handleLogout}>
                         <i className="fa-solid fa-arrow-right-from-bracket" style={{ fontSize: "18px", color: "red" }}></i>
                         <span style={{ color: "red" }}>Log Out</span>
                     </NavDropdown.Item>
