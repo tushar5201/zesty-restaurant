@@ -125,7 +125,9 @@ export default function MenuScreen() {
                                 </Modal.Header>
                                 <Modal.Body>
                                     item Name : <h2 className='ms-3'>{details.name}</h2>
-                                    item Image : <br /><img className='ms-5' src={`https://zesty-backend.onrender.com/menu/get-menu-image/${details._id}`} alt={details.name} width={150} /><br />
+                                    item Image : <br />
+                                    {/* <img className='ms-5' src={`https://zesty-backend.onrender.com/menu/get-menu-image/${details._id}`} alt={details.name} width={150} /><br /> */}
+                                    <img src={details.image} className='mt-5' alt={details.name} width={150} srcset="" /><br />
                                     <table className='table'>
                                         <tbody>
                                             <tr>

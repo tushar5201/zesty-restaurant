@@ -11,7 +11,7 @@ export default function AdsScreen() {
     const [loading, setLoading] = useState(true);
     const checkExist = async () => {
         try {
-            const res = await axios.get(`https://zesty-backend.onrender.com/ad/get-ad-image/${restaurantId}`);
+            const res = await axios.get(`https://zesty-backend.onrender.com/ad/get-ad/${restaurantId}`);
             setAd(res.data);
             setLoading(false);
         } catch (error) {
@@ -44,7 +44,8 @@ export default function AdsScreen() {
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><img src={`https://zesty-backend.onrender.com/ad/get-ad-image/${restaurantId}`} alt="" width={"600px"} /></td>
+                                            {/* <td><img src={`https://zesty-backend.onrender.com/ad/get-ad-image/${restaurantId}`} alt="" width={"600px"} /></td> */}
+                                            <td><img src={ad.image} alt={ad} srcset="" width={"600px"} /></td>
                                             <td><Link className="btn btn-primary">Edit</Link></td>
                                         </tr>
                                     </tbody>
