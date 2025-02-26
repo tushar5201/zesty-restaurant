@@ -9,7 +9,7 @@ const reducer = (state, action) => {
     case 'FETCH_REQUEST':
       return { ...state, loading: true };
     case 'FETCH_SUCCESS':
-      return { ...state, loading: false, outlets: action.payload };
+      return { ...state, loading: false, outlet: action.payload };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
     default:
@@ -17,29 +17,29 @@ const reducer = (state, action) => {
   }
 };
 
-export default function OutletScreen({ userId }) {
-  const [{ loading, error, outlets }, dispatch] = useReducer(reducer, {
+export default function OutletScreen() {
+  const [{ loading, error, outlet }, dispatch] = useReducer(reducer, {
     loading: true,
     error: '',
-    outlets: [],
+    outlet: [],
   });
 
-  const [showDetails, setShowDetails] = useState(false);
+  const [showDetails, setShowDetails] = useState(true);
   const [data, setData] = useState(null);
+  const restaurantId = localStorage.getItem("restaurantId");
 
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
-        const response = await axios.get('https://zesty-backend.onrender.com/restaurant/get-all-restaurants');
-        const filteredOutlets = response.data.filter(outlet => outlet.ownerId === userId);
-        dispatch({ type: 'FETCH_SUCCESS', payload: filteredOutlets });
+        const response = await axios.get(`https://zesty-backend.onrender.com/restaurant/get/${restaurantId}`);
+        dispatch({ type: 'FETCH_SUCCESS', payload: response.data });
       } catch (error) {
         dispatch({ type: 'FETCH_FAIL', payload: error.message });
       }
     };
-    if (userId) fetchData();
-  }, [userId]);
+    fetchData();
+  }, []);
 
   const handleShow = (details) => {
     setData(details);
@@ -54,78 +54,81 @@ export default function OutletScreen({ userId }) {
         <div style={{ padding: '20px' }}>
           <h2 style={{ margin: '15px 0 5px 20px' }}>Your Outlet Information</h2>
 
-          {loading ? (
-            <h3>Loading...</h3>
-          ) : error ? (
-            <h3>Error: {error}</h3>
-          ) : outlets.length === 0 ? (
-            <h3>No outlets found.</h3>
-          ) : (
-            <table className="table mt-5">
+          {loading ? <h3>Loading</h3> : error ? error :
+            <table className='table mt-5 m-2'>
               <thead>
                 <tr>
-                  <th>Outlet ID</th>
-                  <th>Outlet Name</th>
-                  <th>Details</th>
+                  <th>Field</th>
+                  <th>Value</th>
                 </tr>
               </thead>
-              <tbody>
-                {outlets.map((outlet, i) => (
-                  <tr key={i}>
-                    <td>{outlet._id}</td>
-                    <td>
-                      <h4>{outlet.restaurantName}</h4>
-                    </td>
-                    <td>
-                      <button
-                        onClick={() => handleShow(outlet)}
-                        style={{
-                          textDecoration: 'underline',
-                          background: 'none',
-                          padding: 0,
-                          width: '100px',
-                        }}
-                      >
-                        Details
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+              <tbody className='p-5'>
+                <tr>
+                  <td>Restaurant Image</td>
+                  <td><img src={outlet.logoImg} width={500} alt="" srcset="" /></td>
+                </tr>
+                <tr>
+                  <td>Restaurant Name</td>
+                  <td><h5>{outlet.restaurantName}</h5></td>
+                </tr>
+                <tr>
+                  <td>Owner Name</td>
+                  <td>{outlet.ownerName}</td>
+                </tr>
+                <tr>
+                  <td>Address</td>
+                  <td>{outlet.shopNumber}, {outlet.floor}, {outlet.buildingName}, {outlet.selectedArea}, {outlet.pincode}, {outlet.city}, {outlet.state}</td>
+                </tr>
+                <tr>
+                  <td>Email</td>
+                  <td>{outlet.email}</td>
+                </tr>
+                <tr>
+                  <td>Phone Number</td>
+                  <td>{outlet.mobile}</td>
+                </tr>
+                <tr>
+                  <td>PAN Number</td>
+                  <td>{outlet.pan}</td>
+                </tr>
+                <tr>
+                  <td>GST Number</td>
+                  <td>{outlet.gstin}</td>
+                </tr>
+                <tr>
+                  <td>Food Type</td>
+                  <td>{outlet.veg}</td>
+                </tr>
+                <tr>
+                  <th>Banking Info</th>
+                </tr>
+                <tr>
+                  <td>IFSC Code</td>
+                  <td>{outlet.ifsc}</td>
+                </tr>
+                <tr>
+                  <td>Account Number</td>
+                  <td>{outlet.acno}</td>
+                </tr>
+                <tr>
+                  <td>Payment Status</td>
+                  <td>{outlet.payment === "Pending" ?
+                    <span className='text-warning bg-warning bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Pending</span>
+                    : outlet.payment === "Failed" ? <span className='text-danger bg-danger bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Failed</span>
+                      : outlet.payment === "Success" && <span className='text-success bg-success bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Success</span>
+                  }</td>
+                </tr>
+                <tr>
+                  <td>Verification Status</td>
+                  <td>{outlet.verified === "Pending" ?
+                    <span className='text-warning bg-warning bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Pending</span>
+                    : outlet.verified === "Rejected" ? <span className='text-danger bg-danger bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Rejected</span>
+                      : outlet.verified === "Approved" && <span className='text-success bg-success bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Approved</span>
+                  }</td>
+                </tr>
               </tbody>
             </table>
-          )}
-
-          {data != null && (
-            <Modal show={showDetails} onHide={() => setShowDetails(false)}>
-              <Modal.Header closeButton>
-                <Modal.Title>{data.restaurantName}</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <h5>Restaurant Logo:</h5>
-                <img
-                  className="ms-5"
-                  src={`https://zesty-backend.onrender.com/restaurant/get-restaurant-logo/${data._id}`}
-                  alt={data.restaurantName}
-                  width={250}
-                />
-                <br />
-                <table className="table">
-                  <tbody>
-                    <tr>
-                      <td>Owner Name</td>
-                      <td>{data.ownerName}</td>
-                    </tr>
-                    <tr>
-                      <td>Address</td>
-                      <td>
-                        {data.shopNumber}, {data.floor}, {data.buildingName}, {data.selectedArea}, {data.city}, {data.state}, {data.pincode}.
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </Modal.Body>
-            </Modal>
-          )}
+          }
         </div>
       </div>
     </div>
