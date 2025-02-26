@@ -10,7 +10,7 @@ export default function PartnerContract({ onBack }) {
         onBack();
     }
     const { formData } = useContext(SigninContext);
-
+    const [loading, setLoading] = useState(false);
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -90,9 +90,10 @@ export default function PartnerContract({ onBack }) {
                         <button type='submit' onClick={handleBack} className='btn-continue'>Back</button>
                     </Col>
                     <Col>
-                        <button type='submit' className='btn-continue'>Pay Now</button>
+                        <button type='submit' className='btn-continue' onClick={() => setLoading(true)}>Pay Now</button>
                     </Col>
                 </Row>
+                {loading && <h1>Loading...</h1>}
             </Form>
         </div>
     )

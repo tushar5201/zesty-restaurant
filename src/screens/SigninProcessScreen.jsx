@@ -14,13 +14,13 @@ export default function SigninProcessScreen() {
     const [user, setUser] = useState(null);
     // const restaurantId = JSON.stringify(localStorage.getItem("restaurantId"));
     // // console.log(restaurantId);
-    
+
     // const navigate = useNavigate();
 
     // useEffect(() => {
     //     if (restaurantId !== "" || restaurantId !== null) {
     //         console.log(restaurantId);
-            
+
     //         navigate("/payment-failure");
     //     }
     // }, []);
@@ -79,7 +79,7 @@ export default function SigninProcessScreen() {
                 <Row>
                     <Col md={3} style={{ marginTop: "50px" }}>
                         <Box>
-                            <Stepper activeStep={activeStep} orientation='vertical' sx={{
+                            <Stepper activeStep={activeStep} orientation='vertical' style={{ position: "fixed", width: "250px" }} sx={{
                                 '& .MuiStepIcon-root.Mui-active': {
                                     color: 'black', // Change the color of the active step icon
                                 },

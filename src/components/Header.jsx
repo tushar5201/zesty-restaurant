@@ -21,7 +21,7 @@ export default function Header() {
     const { toggleSidebar } = useContext(SidebarContext);
 
     const handleLogout = () => {
-        localStorage.removeItem("restaurantName");
+        localStorage.removeItem("restaurantId");
         window.location.reload(true);
     }
 

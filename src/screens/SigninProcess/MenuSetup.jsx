@@ -11,13 +11,7 @@ export default function MenuSetup({ onNext, onBack }) {
 
     const { formData, setFormData } = useContext(SigninContext);
 
-    const [selectedOption, setSelectedOption] = useState(null);
     const [menu1, setMenu] = useState([]);
-
-    const handleClick = (option) => {
-        setSelectedOption(option);
-        setFormData({ ...formData, "packagingCharge": option })
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,13 +19,8 @@ export default function MenuSetup({ onNext, onBack }) {
         if (formData["veg"] === "") {
             toast.error("Please select food type");
         }
-
-        if (selectedOption === null) {
-            toast.error("Please select packaging charges")
-        } else {
-            setFormData({ ...formData, "menuImg": menu1, "payment": "Pending", "verified": "Pending" });
-            onNext();
-        }
+        setFormData({ ...formData, "menuImg": menu1, "payment": "Pending", "verified": "Pending" });
+        onNext();
     }
 
     const handleFileChange = (e) => {
@@ -93,77 +82,38 @@ export default function MenuSetup({ onNext, onBack }) {
                     <h5>Packaging Charges</h5>
                     <p style={{ color: "#aaa" }}>Not Applicable on Indian Breads, MRP Items, Packaged Beverages.</p>
 
-                    <Row>
-                        <Col>
-                            <a
-                                onClick={() => handleClick('Zero')}
-                                style={{
-                                    backgroundColor: formData["packagingCharge"] === 'Zero' ? '#000' : '#fff',
-                                    color: formData["packagingCharge"] === 'Zero' ? '#fff' : '#000',
-                                    padding: '10px 20px',
-                                    border: '1px solid black',
-                                    borderRadius: '5px',
-                                    cursor: 'pointer',
-                                    margin: '5px',
-                                }}
-                            >
-                                Zero
-                            </a>
-
-                        </Col>
-
-                        <Col>
-                            <a
-                                onClick={() => handleClick('Based on item price')}
-                                style={{
-                                    backgroundColor: formData["packagingCharge"] === 'Based on item price' ? '#000' : '#fff',
-                                    color: formData["packagingCharge"] === 'Based on item price' ? '#fff' : '#000',
-                                    padding: '10px 20px',
-                                    border: '1px solid black',
-                                    borderRadius: '5px',
-                                    cursor: 'pointer',
-                                    margin: '5px',
-                                }}
-                            >
-                                Based on item price
-                            </a>
-                        </Col>
-
-                        {selectedOption === "Based on item price" && (
-                            <div>
-                                <table className='table table-striped mt-3'>
-                                    <thead>
-                                        <tr>
-                                            <th>Item Price</th>
-                                            <th>Packaging Charge</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>0 - 50</td>
-                                            <td>5</td>
-                                        </tr>
-                                        <tr>
-                                            <td>51 - 150</td>
-                                            <td>7</td>
-                                        </tr>
-                                        <tr>
-                                            <td>151 - 300</td>
-                                            <td>10</td>
-                                        </tr>
-                                        <tr>
-                                            <td>301 - 500</td>
-                                            <td>15</td>
-                                        </tr>
-                                        <tr>
-                                            <td>501 and above</td>
-                                            <td>20</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
-                    </Row>
+                    <div>
+                        <table className='table table-striped mt-3'>
+                            <thead>
+                                <tr>
+                                    <th>Item Price</th>
+                                    <th>Packaging Charge</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>0 - 50</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td>51 - 150</td>
+                                    <td>7</td>
+                                </tr>
+                                <tr>
+                                    <td>151 - 300</td>
+                                    <td>10</td>
+                                </tr>
+                                <tr>
+                                    <td>301 - 500</td>
+                                    <td>15</td>
+                                </tr>
+                                <tr>
+                                    <td>501 and above</td>
+                                    <td>20</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </Card>
 
                 <Row>

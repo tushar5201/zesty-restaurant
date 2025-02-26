@@ -24,7 +24,7 @@ export default function AddMenuItem() {
 
     const submitHandler = async (e) => {
 
-        const finalPrice = ((parseInt(price) + parseInt(packagingCharge)) + (parseInt(price) + parseInt(packagingCharge))*0.3).toString();
+        const finalPrice = ((parseInt(price) + parseInt(packagingCharge)) + (parseInt(price) + parseInt(packagingCharge)) * 0.3).toString();
         const menuItemData = new FormData();
         menuItemData.append("name", name);
         menuItemData.append("description", description);
@@ -163,17 +163,34 @@ export default function AddMenuItem() {
                             <label style={{ color: "#222" }}>Packaging Charges</label>
                         </div>
 
-                        <Row>
-                            <Col>
-                                <h5>Final Price : </h5>
-                                <p>(Item price + packaging charge + zesty commision(30%))</p>
-                            </Col>
-                            <Col>
-                                <h4>{(parseInt(price) + parseInt(packagingCharge)) + (parseInt(price) + parseInt(packagingCharge))*0.3}</h4>
-                            </Col>
-                        </Row>
-
                         <Accordion>
+                            <Accordion.Item eventKey='0'>
+                                <Accordion.Header>
+                                    <h5 style={{ width: "100%" }}>Final Price </h5>
+                                    <h5 className='me-5' style={{ width: "100%", textAlign: "right" }}>{(parseInt(price) + parseInt(packagingCharge)) + (parseInt(price) + parseInt(packagingCharge)) * 0.3}</h5><br />
+                                </Accordion.Header>
+                                <Accordion.Body>
+                                    <table className='table'>
+                                        <tbody>
+                                            <tr>
+                                                <td className='text-start'>Item Total</td>
+                                                <td>{parseInt(price)}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className='text-start'>Packaging Charge</td>
+                                                <td>{parseInt(packagingCharge)}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className='text-start'>Zesty Commision (30%)</td>
+                                                <td>{(parseInt(price) + parseInt(packagingCharge)) * 0.3}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </Accordion.Body>
+                            </Accordion.Item>
+                        </Accordion>
+
+                        <Accordion className='mt-3'>
                             <Accordion.Item eventKey='0'>
                                 <Accordion.Header>Variants</Accordion.Header>
                                 <Accordion.Body>
