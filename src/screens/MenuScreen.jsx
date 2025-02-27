@@ -23,6 +23,7 @@ export default function MenuScreen() {
 
     const [showDetails, setShowDetails] = useState(false);
     const [details, setDetails] = useState(null);
+    const [search, setSearch] = useState("");
 
     const [{ loading, error, menu }, dispatch] = useReducer(reducer, {
         loading: true,
@@ -74,8 +75,11 @@ export default function MenuScreen() {
 
                 <div style={{ padding: "20px" }}>
                     <Row>
-                        <Col md={10}>
+                        <Col md={8}>
                             <h2 style={{ margin: "15px 0 5px 20px" }}>Menu</h2>
+                        </Col>
+                        <Col md={2}>
+                            <input type="text" value={search} placeholder='Search..' className='in form-control mt-4' onChange={(e) => setSearch(e.target.value)} />
                         </Col>
                         <Col>
                             <Link to={"/restaurant/add-menu-item"} className='btn btn-outline-dark mt-4'>Add Menu Item</Link>
@@ -95,26 +99,30 @@ export default function MenuScreen() {
 
                         {loading ? <h3>Loading...</h3> : error ? { error } : (
                             <tbody>
-
-                                {/* {menu.slice(0).reverse().map((category, i) => (
-                                <tr key={i} style={{ verticalAlign: "middle" }}>
-                                    <td>{category._id}</td>
-                                    <td><h4>{category.name}</h4></td>
-                                    <td><img src={`https://zesty-backend.onrender.com/category/get-category-image/${category._id}`} height={"200px"} alt={category.name} /></td>
-                                    <td><button className='btn btn-primary'>Update</button></td>
-                                    <td><button className='btn btn-danger' onClick={() => handleDelete(category._id)}>Delete</button></td>
-                                </tr>
-                            ))} */}
-
-                                {menu.menu.map((menuItem, i) => (
+                                {search === "" && menu.menu.map((menuItem, i) => (
                                     <tr key={i} style={{ verticalAlign: "middle" }}>
                                         <td>{menuItem._id}</td>
                                         <td><h5>{menuItem.name}</h5></td>
                                         <td><button onClick={() => handleShow(menuItem)} style={{ textDecoration: "underline", background: "none", padding: 0, width: "100px" }}>Details</button></td>
-                                        <td><button className='btn btn-primary'>Update</button></td>
+                                        <td><Link to={`/restaurant/update-menu-item/${menuItem._id}`} className='btn btn-primary'>Update</Link></td>
                                         <td><button className='btn btn-danger' onClick={() => handleDelete(menuItem._id)}>Delete</button></td>
                                     </tr>
                                 ))}
+                                {menu.menu
+                                    .filter((item) => {
+                                        const searchTerm = search.toLowerCase();
+                                        const name = item.name.toLowerCase();
+                                        return searchTerm && name.startsWith(searchTerm);
+                                    })
+                                    .map((menuItem, i) => (
+                                        <tr key={i} style={{ verticalAlign: "middle" }}>
+                                            <td>{menuItem._id}</td>
+                                            <td><h5>{menuItem.name}</h5></td>
+                                            <td><button onClick={() => handleShow(menuItem)} style={{ textDecoration: "underline", background: "none", padding: 0, width: "100px" }}>Details</button></td>
+                                            <td><Link to={`/restaurant/update-menu-item/${menuItem._id}`} className='btn btn-primary'>Update</Link></td>
+                                            <td><button className='btn btn-danger' onClick={() => handleDelete(menuItem._id)}>Delete</button></td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         )}
 

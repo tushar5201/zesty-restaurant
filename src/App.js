@@ -8,7 +8,7 @@ import PaymentSuccess, { PaymentFailed } from "./screens/SigninProcess/PaymentSt
 import { SigninProvider } from "./context/signinContext";
 import Dashboard from "./screens/Dashboard";
 import MenuScreen from "./screens/MenuScreen";
-import AddMenuItem from "./controllers/MenuController";
+import AddMenuItem, { UpdateMenu } from "./controllers/MenuController";
 import OrderScreen from "./screens/OrderScreen";
 import AdsScreen from "./screens/AdsScreen";
 import OutletInfoScreen from "./screens/OutletInfo";
@@ -29,6 +29,7 @@ const App = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/restaurant/menu" element={<MenuScreen />} />
             <Route path="/restaurant/add-menu-item" element={<AddMenuItem />} />
+            <Route path="/restaurant/update-menu-item/:id" element={<UpdateMenu />} />
             <Route path="/restaurant/orders" element={<OrderScreen />} />
             <Route path="/restaurant/ads" element={<AdsScreen />} />
             <Route path="/restaurant/create-ads" element={<CreateAds />} />

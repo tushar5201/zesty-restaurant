@@ -55,7 +55,7 @@ export default function CreateAds() {
 
                     <form action="">
                         <div className="form-floating mt-5 mb-2">
-                            <input type="file" name="image" onChange={(e) => setImage(e.target.files[0])} id="image" placeholder='Add your advertisement image' className='in form-control' style={{ width: "100%" }} />
+                            <input type="file" name="image" onChange={(e) => setImage(e.target.files[0])} id="image" placeholder='Add your advertisement image' className='in form-control' style={{ width: "100%" }} required />
                             <label style={{ color: "#222" }}>Add your advertisement image</label>
                         </div>
                         <p className='text-muted text-start'>*Image should be rectangle</p>
