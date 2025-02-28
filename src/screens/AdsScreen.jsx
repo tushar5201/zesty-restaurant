@@ -24,7 +24,7 @@ export default function AdsScreen() {
     }, []);
     return (
         <div className='app'>
-            <Sidebar id={4} />
+            <Sidebar id={5} />
             <div style={{ width: "100%", padding: "0", margin: "0" }}>
                 <Header />
 

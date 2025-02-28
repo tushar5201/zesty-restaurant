@@ -9,11 +9,12 @@ import { SigninProvider } from "./context/signinContext";
 import Dashboard from "./screens/Dashboard";
 import MenuScreen from "./screens/MenuScreen";
 import AddMenuItem, { UpdateMenu } from "./controllers/MenuController";
-import OrderScreen from "./screens/OrderScreen";
 import AdsScreen from "./screens/AdsScreen";
 import OutletInfoScreen from "./screens/OutletInfo";
 import HelpCenterScreen from "./screens/HelpCenterScreen";
 import CreateAds from "./controllers/AdController";
+import ActiveOrderScreen from "./screens/ActiveOrderScreen";
+import PastOrderScreen from "./screens/PastOrderScreen";
 
 const App = () => {
   return (
@@ -30,7 +31,8 @@ const App = () => {
             <Route path="/restaurant/menu" element={<MenuScreen />} />
             <Route path="/restaurant/add-menu-item" element={<AddMenuItem />} />
             <Route path="/restaurant/update-menu-item/:id" element={<UpdateMenu />} />
-            <Route path="/restaurant/orders" element={<OrderScreen />} />
+            <Route path="/restaurant/active-orders" element={<ActiveOrderScreen />} />
+            <Route path="/restaurant/past-orders" element={<PastOrderScreen />} />
             <Route path="/restaurant/ads" element={<AdsScreen />} />
             <Route path="/restaurant/create-ads" element={<CreateAds />} />
             <Route path="/restaurant/info" element={<OutletInfoScreen />} />

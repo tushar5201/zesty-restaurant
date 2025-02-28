@@ -69,7 +69,7 @@ export default function MenuScreen() {
 
     return (
         <div className='app'>
-            <Sidebar id={3} />
+            <Sidebar id={4} />
             <div style={{ width: "100%", overflow: "hidden" }}>
                 <Header />
 
