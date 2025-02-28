@@ -48,7 +48,7 @@ export default function OutletScreen() {
 
   return (
     <div className="app">
-      <Sidebar id={5} />
+      <Sidebar id={6} />
       <div style={{ width: '100%', overflow: 'hidden' }}>
         <Header />
         <div style={{ padding: '20px' }}>

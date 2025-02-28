@@ -29,7 +29,7 @@ export default function HelpCenterScreen() {
 
     return (
         <div className='app'>
-            <Sidebar id={6} />
+            <Sidebar id={7} />
             <div style={{ width: "100%", padding: "0", margin: "0" }}>
                 <Header />
 
