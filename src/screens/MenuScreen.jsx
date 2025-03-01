@@ -112,7 +112,7 @@ export default function MenuScreen() {
                                     .filter((item) => {
                                         const searchTerm = search.toLowerCase();
                                         const name = item.name.toLowerCase();
-                                        return searchTerm && name.startsWith(searchTerm);
+                                        return searchTerm && name.includes(searchTerm);
                                     })
                                     .map((menuItem, i) => (
                                         <tr key={i} style={{ verticalAlign: "middle" }}>

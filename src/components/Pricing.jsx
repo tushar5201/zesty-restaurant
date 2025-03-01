@@ -21,7 +21,7 @@ export default function Pricing() {
                                                 className="text-uppercase mb-3 new-section"
                                                 style={{ fontSize: "14px", color: "#024b3b" }}
                                             >
-                                                what’s included
+                                                what’s include
                                             </b>
                                         </Col>
                                         <Col>
