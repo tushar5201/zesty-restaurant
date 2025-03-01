@@ -32,7 +32,7 @@ const reducer1 = (state, action) => {
     }
 }
 
-const socket = io("http://localhost:5000");
+const socket = io("https://zesty-backend.onrender.com");
 
 export default function ActiveOrderScreen() {
     const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
@@ -63,7 +63,7 @@ export default function ActiveOrderScreen() {
     const fetchOrderData = async () => {
         dispatch({ type: 'FETCH_REQUEST' });
         try {
-            const order = await axios.get(`/order/get-active-order-for-restaurant/${restaurantId}`);
+            const order = await axios.get(`https://zesty-backend.onrender.com/order/get-active-order-for-restaurant/${restaurantId}`);
             dispatch({ type: 'FETCH_SUCCESS', payload: order.data })
         } catch (error) {
             dispatch({ type: 'FETCH_FAIL', payload: error.message })
@@ -83,7 +83,7 @@ export default function ActiveOrderScreen() {
     const updateOrderStatus = async (orderStatus, id) => {
         try {
             const totalAmountRestaurant = caculateTotalAmount(orders.find(order => order._id === id));
-            const res = await axios.post("/order/update-order-status", { id, orderStatus, totalAmountRestaurant });
+            const res = await axios.post("https://zesty-backend.onrender.com/order/update-order-status", { id, orderStatus, totalAmountRestaurant });
             if (res.status === 200) {
                 fetchOrderData();
             } else if (res.status === 405) {
