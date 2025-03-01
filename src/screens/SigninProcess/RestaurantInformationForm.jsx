@@ -116,6 +116,11 @@ export default function RestaurantInformationForm({ onNext }) {
                         <label style={{ color: "#222" }}>Restaurant Name</label>
                     </div>
 
+                    <div className="form-floating">
+                        <input type="text" name="cuisines" value={formData["cuisines"]} onChange={(e) => setFormData({ ...formData, "cuisines": e.target.value })} placeholder="Restaurant Name" className='in form-control' required />
+                        <label style={{ color: "#222" }}>Cuisines Your restaurant will serve</label>
+                    </div>
+
                     <input type='file' name='logoImg' className='in form-control' placeholder='Name' onChange={handleLogo} /><br />
                     {logoImg && (
                         <div className="text-center">

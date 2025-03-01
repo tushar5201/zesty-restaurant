@@ -24,6 +24,15 @@ export default function AddMenuItem() {
 
     const submitHandler = async (e) => {
 
+        if (name === "" || description === "" || foodType === "" || category === "" || price === "" || packagingCharge === "") {
+            toast.dark("Field are mandatory to fill");
+            return;
+        } 
+        if(price < 0 || packagingCharge <0) {
+            toast.dark("price & packaging carce should positive integers");
+            return;
+        }
+
         const finalPrice = ((parseInt(price) + parseInt(packagingCharge)) + (parseInt(price) + parseInt(packagingCharge)) * 0.3).toString();
         const menuItemData = new FormData();
         menuItemData.append("name", name);
@@ -92,7 +101,7 @@ export default function AddMenuItem() {
 
                     <form>
                         <div className="form-floating mt-5 mb-2">
-                            <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} required />
+                            <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} required={true} />
                             <label style={{ color: "#222" }}>Item Name</label>
                         </div>
 
@@ -102,6 +111,7 @@ export default function AddMenuItem() {
                         </div>
 
                         <select name="" id="" className='in form-select' onChange={(e) => setCategory(e.target.value)}>
+                            <option value="" disabled selected>Select category</option>
                             {categories.map((category) => (
                                 <option value={category.name}>{category.name}</option>
                             ))}
