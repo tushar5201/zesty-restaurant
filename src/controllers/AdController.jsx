@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import Header from '../components/Header'
 import { Card, Container } from 'react-bootstrap'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -55,7 +55,7 @@ export default function CreateAds() {
 
                     <form action="">
                         <div className="form-floating mt-5 mb-2">
-                            <input type="file" name="image" onChange={(e) => setImage(e.target.files[0])} id="image" placeholder='Add your advertisement image' className='in form-control' style={{ width: "100%" }} required />
+                            <input type="file" name="image" accept='image/png, image/jpeg' onChange={(e) => setImage(e.target.files[0])} id="image" placeholder='Add your advertisement image' className='in form-control' style={{ width: "100%" }} required />
                             <label style={{ color: "#222" }}>Add your advertisement image</label>
                         </div>
                         <p className='text-muted text-start'>*Image should be rectangle</p>
@@ -67,6 +67,98 @@ export default function CreateAds() {
                         )}
                         <Link className='btn btn-dark mt-5' onClick={submitHandler}>Pay Now</Link>
                     </form>
+                </Card>
+            </Container>
+        </div>
+    )
+}
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case "FETCH_REQUEST":
+            return { ...state, loading: true };
+        case "FETCH_SUCCESS":
+            return { ...state, loading: false, ad: action.payload };
+        case "FETCH_FAILED":
+            return { ...state, loading: false, error: action.payload };
+        default:
+            return state;
+    }
+}
+
+export function UpdateAd() {
+    const [{ loading, error, ad }, dispatch] = useReducer(reducer, {
+        loading: true,
+        error: "",
+        ad: {}
+    });
+    const restaurantId = localStorage.getItem("restaurantId");
+    const [image, setImage] = useState("");
+    const { adId } = useParams();
+
+    const navigate = useNavigate();
+
+    const fetchData = async () => {
+        dispatch({ type: "FETCH_REQUEST" });
+        try {
+            const res = await axios.get(`https://zesty-backend.onrender.com/ad/get-ad/${restaurantId}`);
+            dispatch({ type: "FETCH_SUCCESS", payload: res.data });
+        } catch (error) {
+            dispatch({ type: 'FETCH_FAILED', payload: error.message })
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const submitHandler = async (e) => {
+        e.preventDefault();
+        const adData = new FormData();
+        adData.append("image", image);
+        adData.append("id", adId);
+        try {
+            const res = await axios.post(`https://zesty-backend.onrender.com/ad/update-ad`, adData, {
+                headers: { "Content-Type": "multipart/form-data" },
+                withCredentials: true  // Ensure credentials are included
+            });
+            if (res.status === 200) {
+                toast.dark("Updated.");
+                navigate("/restaurant/ads");
+            } else if (res.status === 405) {
+                toast.dark("Updating failed.");
+            } else {
+                toast.dark("internal error");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    return (
+        <div>
+            <Header />
+            <Container>
+                <Card className='text-center mt-5 w-50 mx-auto p-5'>
+                    <h3><u>Update Advertisement</u></h3>
+
+                    {loading ? <h3>Loading...</h3> : error ? error :
+                        <form action="">
+                            <div className="form-floating mt-5 mb-2">
+                                <input type="file" name="image" accept='image/png, image/jpeg' onChange={(e) => setImage(e.target.files[0])} id="image" placeholder='Add your advertisement image' className='in form-control' style={{ width: "100%" }} required />
+                                <label style={{ color: "#222" }}>Add your advertisement image</label>
+                            </div>
+                            <p className='text-muted text-start'>*Image should be rectangle</p>
+                            <p className='text-muted text-start'>*Image should 1200x600 px or 1920x960 px (with high resolution)</p>
+                            {image && (
+                                <div className="text-center">
+                                    <img src={URL.createObjectURL(image)} alt='category' height={'200px'} />
+                                </div>
+                            )}
+                            <img src={ad.image} alt={ad} srcset="" width={"400px"} /> <br />
+                            <Link className='btn btn-dark mt-5' onClick={submitHandler}>Submit</Link>
+                        </form>
+                    }
                 </Card>
             </Container>
         </div>
