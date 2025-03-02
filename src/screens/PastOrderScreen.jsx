@@ -17,6 +17,19 @@ const reducer = (state, action) => {
     }
 };
 
+const reducer1 = (state, action) => {
+    switch (action.type) {
+        case 'FETCH_REQUEST':
+            return { ...state, loadingRes: true }
+        case 'FETCH_SUCCESS':
+            return { ...state, loadingRes: false, restaurantMenu: action.payload }
+        case 'FETCH_FAIL':
+            return { ...state, loadingRes: false, errorRes: action.payload }
+        default:
+            return state;
+    }
+}
+
 export default function PastOrdersScreen() {
     const restaurantId = localStorage.getItem("restaurantId");
     const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
@@ -25,20 +38,38 @@ export default function PastOrdersScreen() {
         orders: []
     });
 
+    const [{ loadingRes, errorRes, restaurantMenu }, dispatchRes] = useReducer(reducer1, {
+        loading: true,
+        error: '',
+        restaurantMenu: []
+    });
+
     const [showDetails, setShowDetails] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
 
+    const fetchOrders = async () => {
+        dispatch({ type: 'FETCH_REQUEST' });
+        try {
+            const response = await axios.get(`/order/get-all-orders-for-restaurant/${restaurantId}`);
+            dispatch({ type: 'FETCH_SUCCESS', payload: response.data });
+        } catch (error) {
+            dispatch({ type: 'FETCH_FAIL', payload: error.response?.data?.message || error.message });
+        }
+    };
+
+    const fetchRestaurantData = async () => {
+        dispatchRes({ type: 'FETCH_REQUEST' });
+        try {
+            const restaurant = await axios.get(`https://zesty-backend.onrender.com/restaurant/get/${restaurantId}`);
+            dispatchRes({ type: 'FETCH_SUCCESS', payload: restaurant.data.menu });
+        } catch (error) {
+            dispatchRes({ type: 'FETCH_FAIL', payload: error.message })
+        }
+    }
+
     useEffect(() => {
-        const fetchOrders = async () => {
-            dispatch({ type: 'FETCH_REQUEST' });
-            try {
-                const response = await axios.get(`https://zesty-backend.onrender.com/order/get-all-orders-for-restaurant/${restaurantId}`);
-                dispatch({ type: 'FETCH_SUCCESS', payload: response.data });
-            } catch (error) {
-                dispatch({ type: 'FETCH_FAIL', payload: error.response?.data?.message || error.message });
-            }
-        };
         fetchOrders();
+        fetchRestaurantData();
     }, [restaurantId]);
 
     const handleShowDetails = (order) => {
@@ -48,7 +79,7 @@ export default function PastOrdersScreen() {
 
     return (
         <div className='app'>
-            <Sidebar id={5} />
+            <Sidebar id={3} />
             <div style={{ width: "100%", overflow: "hidden" }}>
                 <Header />
                 <div style={{ padding: "20px" }}>
@@ -59,7 +90,8 @@ export default function PastOrdersScreen() {
                                 <tr>
                                     <th>Order ID</th>
                                     <th>Date</th>
-                                    <th>Total Amount Paid</th>
+                                    <th>Order Status</th>
+                                    <th>Total Amount</th>
                                     <th>Details</th>
                                 </tr>
                             </thead>
@@ -68,7 +100,15 @@ export default function PastOrdersScreen() {
                                     <tr key={i}>
                                         <td>{order._id}</td>
                                         <td>{new Date(order.createdAt).toLocaleDateString()}</td>
-                                        <td>${order.totalAmountRestaurant}</td>
+                                        <td>
+                                            {order.orderStatus === "Delivered" ?
+                                                <span className='text-success bg-success bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>{order.orderStatus}
+                                                </span>
+                                                :
+                                                <span className='text-danger bg-danger bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Rejected</span>
+                                            }
+                                        </td>
+                                        <td>₹ {order.totalAmountRestaurant}</td>
                                         <td>
                                             <button onClick={() => handleShowDetails(order)}>Details</button>
                                         </td>
@@ -81,26 +121,63 @@ export default function PastOrdersScreen() {
             </div>
 
             {selectedOrder && (
-                <Modal show={showDetails} onHide={() => setShowDetails(false)}>
+                <Modal show={showDetails} onHide={() => setShowDetails(false)} centered>
                     <Modal.Header closeButton>
                         <Modal.Title>Order Details</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <p><strong>Customer Name:</strong> {selectedOrder.customerName}</p>
-                        <p><strong>Address:</strong> {selectedOrder.deliveryAddress}</p>
                         <h5>Items:</h5>
-                        <ul>
-                            {selectedOrder.items.map((item, index) => (
-                                <li key={index}>
-                                    {item.name} - {item.quantity} x ${item.price}
-                                </li>
-                            ))}
-                        </ul>
-                        <h5>Restaurant Details:</h5>
-                        <p><strong>Restaurant Name:</strong> {selectedOrder.restaurantName || 'N/A'}</p>
-                        <p><strong>Restaurant Earnings:</strong> ${selectedOrder.totalAmountRestaurant}</p>
-                        <p><strong>Order Status:</strong> {selectedOrder.status || 'N/A'}</p>
-                        <p><strong>Payment Status:</strong> {selectedOrder.paymentStatus || 'N/A'}</p>
+                        <table className='table'>
+                            <tbody>
+                                {loadingRes ? <h6>Loading...</h6> : errorRes ? errorRes :
+                                    <>
+                                        {selectedOrder.order.map((item) => (
+                                            <tr>
+                                                <td>{item.quantity} x {
+                                                    restaurantMenu.map((menuItem) =>
+                                                        item.itemId === menuItem._id &&
+                                                        <span>{menuItem.name}</span>
+                                                    )}
+                                                </td>
+                                                <td className='text-end'>
+                                                    {
+                                                        restaurantMenu.map((menuItem) =>
+                                                            item.itemId === menuItem._id &&
+                                                            <span className='me-3'>{menuItem.price}</span>
+                                                        )}
+                                                </td>
+                                            </tr>
+                                        ))}
+
+                                        {/* Total Amount */}
+                                        <tr>
+                                            <th>Total Amount</th>
+                                            <th className="text-end">
+                                                ₹ {selectedOrder.totalAmountRestaurant}
+                                            </th>
+                                        </tr>
+
+                                        {/* Order Status */}
+                                        <tr>
+                                            <td>Order Status</td>
+                                            <td className='d-flex justify-content-end'>
+                                                {selectedOrder.orderStatus === "Delivered" ?
+                                                    <span className='text-success bg-success bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>{selectedOrder.orderStatus}
+                                                    </span>
+                                                    :
+                                                    <span className='text-danger bg-danger bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Rejected</span>
+                                                }
+                                            </td>
+                                            {/* <td>{data.verified === "Pending" ?
+                                                <span className='text-warning bg-warning bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Pending</span>
+                                                : data.verified === "Rejected" ? <span className='text-danger bg-danger bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Rejected</span>
+                                                    : data.verified === "Approved" && <span className='text-success bg-success bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Approved</span>
+                                            }</td> */}
+                                        </tr>
+                                    </>
+                                }
+                            </tbody>
+                        </table>
                     </Modal.Body>
                 </Modal>
             )}
