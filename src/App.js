@@ -12,7 +12,7 @@ import AddMenuItem, { UpdateMenu } from "./controllers/MenuController";
 import AdsScreen from "./screens/AdsScreen";
 import OutletInfoScreen from "./screens/OutletInfo";
 import HelpCenterScreen from "./screens/HelpCenterScreen";
-import CreateAds from "./controllers/AdController";
+import CreateAds, { UpdateAd } from "./controllers/AdController";
 import ActiveOrderScreen from "./screens/ActiveOrderScreen";
 import PastOrderScreen from "./screens/PastOrderScreen";
 
@@ -35,6 +35,7 @@ const App = () => {
             <Route path="/restaurant/past-orders" element={<PastOrderScreen />} />
             <Route path="/restaurant/ads" element={<AdsScreen />} />
             <Route path="/restaurant/create-ads" element={<CreateAds />} />
+            <Route path="/restaurant/update-ad/:adId" element={<UpdateAd />} />
             <Route path="/restaurant/info" element={<OutletInfoScreen />} />
             <Route path="/restaurant/help" element={<HelpCenterScreen />} />
           </Routes>

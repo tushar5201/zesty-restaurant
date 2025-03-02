@@ -46,7 +46,7 @@ export default function AdsScreen() {
                                         <tr>
                                             {/* <td><img src={`https://zesty-backend.onrender.com/ad/get-ad-image/${restaurantId}`} alt="" width={"600px"} /></td> */}
                                             <td><img src={ad.image} alt={ad} srcset="" width={"600px"} /></td>
-                                            <td><Link className="btn btn-primary">Edit</Link></td>
+                                            <td><Link to={`/restaurant/${ad._id}`} className="btn btn-primary">Edit</Link></td>
                                         </tr>
                                     </tbody>
                                 </table>

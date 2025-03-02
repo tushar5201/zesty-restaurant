@@ -154,7 +154,7 @@ export default function AddMenuItem() {
                         </Row>
 
                         <div className="form-floating mt-5 mb-2">
-                            <input type="file" name="image" onChange={(e) => setImage(e.target.files[0])} id="image" placeholder='Menu Item Image' className='in form-control' style={{ width: "100%" }} required />
+                            <input type="file" accept='image/png, image/jpeg' name="image" onChange={(e) => setImage(e.target.files[0])} id="image" placeholder='Menu Item Image' className='in form-control' style={{ width: "100%" }} required />
                             <label style={{ color: "#222" }}>Menu Item Image</label>
                         </div>
                         {image && (
@@ -419,7 +419,7 @@ export function UpdateMenu() {
                             </Row>
 
                             <div className="form-floating mt-5 mb-2">
-                                <input type="file" name="image" onChange={(e) => setImage(e.target.files[0])} id="image" placeholder='Menu Item Image' className='in form-control' style={{ width: "100%" }} />
+                                <input type="file" accept='image/png, image/jpeg' name="image" onChange={(e) => setImage(e.target.files[0])} id="image" placeholder='Menu Item Image' className='in form-control' style={{ width: "100%" }} />
                                 <label style={{ color: "#222" }}>Menu Item Image</label>
                             </div>
                             <img src={menuItem.image} height={"200px"} alt={menuItem.name} />
