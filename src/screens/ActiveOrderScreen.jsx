@@ -142,7 +142,7 @@ export default function ActiveOrderScreen() {
                                                 ID: &nbsp;&nbsp;&nbsp;<strong>{order._id}</strong>
                                             </Col>
                                             <Col>
-                                                <strong>{formatTime(order.createdAt)}</strong>
+                                                <strong>{new Date(order.createdAt).toLocaleTimeString()}</strong>
                                             </Col>
                                         </Row>
                                     </Card.Header>
