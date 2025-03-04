@@ -4,7 +4,7 @@ import Header from '../components/Header'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import {io} from "socket.io-client"
+import { io } from "socket.io-client"
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -82,7 +82,7 @@ export default function ActiveOrderScreen() {
 
     const updateOrderStatus = async (orderStatus, id) => {
         try {
-            const totalAmountRestaurant = caculateTotalAmount(orders.find(order => order._id === id));
+            const totalAmountRestaurant = ((caculateTotalAmount(orders.find(order => order._id === id))) * 100) / 130;
             const res = await axios.post("https://zesty-backend.onrender.com/order/update-order-status", { id, orderStatus, totalAmountRestaurant });
             if (res.status === 200) {
                 fetchOrderData();
@@ -112,7 +112,7 @@ export default function ActiveOrderScreen() {
     }, [restaurantId]);
 
     useEffect(() => {
-        if(restaurantId) {
+        if (restaurantId) {
             socket.emit("restaurant_join", restaurantId);
 
             socket.on("new_order", (order) => {
@@ -134,76 +134,81 @@ export default function ActiveOrderScreen() {
 
                     {loading ? <h5>Loading...</h5> : error ? error :
                         <Container className='mt-4'>
-                            {orders.slice(0).reverse().map((order) => (
-                                <Card className='w-50 p-3 mt-3'>
-                                    <Card.Header>
-                                        <Row>
-                                            <Col md={9}>
-                                                ID: &nbsp;&nbsp;&nbsp;<strong>{order._id}</strong>
-                                            </Col>
-                                            <Col>
-                                                <strong>{new Date(order.createdAt).toLocaleTimeString()}</strong>
-                                            </Col>
-                                        </Row>
-                                    </Card.Header>
-                                    <Card.Body>
-                                        <table className='table'>
-                                            <tbody>
-                                                {loadingRes ? <h6>Loading...</h6> : errorRes ? errorRes :
-                                                    <>
-                                                        {order.order.map((item) => (
-                                                            <tr>
-                                                                <td>{item.quantity} x {
-                                                                    restaurantMenu.map((menuItem) =>
-                                                                        item.itemId === menuItem._id &&
-                                                                        <span>{menuItem.name}</span>
-                                                                    )}
-                                                                </td>
-                                                                <td className='text-end'>
-                                                                    {
-                                                                        restaurantMenu.map((menuItem) =>
-                                                                            item.itemId === menuItem._id &&
-                                                                            <span className='me-3'>{menuItem.price}</span>
-                                                                        )}
-                                                                </td>
-                                                            </tr>
-                                                        ))}
+                            <Row>
+                                {orders.slice(0).reverse().map((order) => (
 
-                                                        {/* Total Amount */}
-                                                        <tr>
-                                                            <td>Total Amount</td>
-                                                            <td className="text-end">
-                                                                <strong>
-                                                                    ₹ {caculateTotalAmount(order)}
-                                                                </strong>
-                                                            </td>
-                                                        </tr>
+                                    <Col md={6}>
+                                        <Card className='p-3 mt-3'>
+                                            <Card.Header>
+                                                <Row>
+                                                    <Col md={9}>
+                                                        ID: &nbsp;&nbsp;&nbsp;<strong>{order._id}</strong>
+                                                    </Col>
+                                                    <Col>
+                                                        <strong>{new Date(order.createdAt).toLocaleTimeString()}</strong>
+                                                    </Col>
+                                                </Row>
+                                            </Card.Header>
+                                            <Card.Body>
+                                                <table className='table'>
+                                                    <tbody>
+                                                        {loadingRes ? <h6>Loading...</h6> : errorRes ? errorRes :
+                                                            <>
+                                                                {order.order.map((item) => (
+                                                                    <tr>
+                                                                        <td>{item.quantity} x {
+                                                                            restaurantMenu.map((menuItem) =>
+                                                                                item.itemId === menuItem._id &&
+                                                                                <span>{menuItem.name}</span>
+                                                                            )}
+                                                                        </td>
+                                                                        <td className='text-end'>
+                                                                            {
+                                                                                restaurantMenu.map((menuItem) =>
+                                                                                    item.itemId === menuItem._id &&
+                                                                                    <span className='me-3'>{(menuItem.price * 100) / 130}</span>
+                                                                                )}
+                                                                        </td>
+                                                                    </tr>
+                                                                ))}
 
-                                                        {/* Order Status */}
-                                                        <tr>
-                                                            <td>Order Status</td>
-                                                            {order.orderStatus === "Pending" ?
-                                                                <td className='d-flex'>
-                                                                    <button className='btn btn-success w-50' onClick={() => updateOrderStatus("Active", order._id)}>Accept</button>&nbsp;
-                                                                    <button className='btn btn-danger w-50' onClick={() => updateOrderStatus("Rejected", order._id)}>Reject</button>
-                                                                </td>
-                                                                :
-                                                                <td className='d-flex justify-content-end'>
-                                                                    <select name="" className='in form-select w-50' onChange={(e) => updateOrderStatus(e.target.value, order._id)} defaultValue={order.orderStatus}>
-                                                                        <option value="Active" disabled={order.orderStatus !== "Active"}>Active</option>
-                                                                        <option value="Prepared">Prepared</option>
-                                                                        <option value="Delivered">Delivered</option>
-                                                                    </select>
-                                                                </td>
-                                                            }
-                                                        </tr>
-                                                    </>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </Card.Body>
-                                </Card>
-                            ))}
+                                                                {/* Total Amount */}
+                                                                <tr>
+                                                                    <td>Total Amount</td>
+                                                                    <td className="text-end">
+                                                                        <strong>
+                                                                            ₹ {(caculateTotalAmount(order) * 100) / 130}
+                                                                        </strong>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Order Status */}
+                                                                <tr>
+                                                                    <td>Order Status</td>
+                                                                    {order.orderStatus === "Pending" ?
+                                                                        <td className='d-flex'>
+                                                                            <button className='btn btn-success w-50' onClick={() => updateOrderStatus("Active", order._id)}>Accept</button>&nbsp;
+                                                                            <button className='btn btn-danger w-50' onClick={() => updateOrderStatus("Rejected", order._id)}>Reject</button>
+                                                                        </td>
+                                                                        :
+                                                                        <td className='d-flex justify-content-end'>
+                                                                            <select name="" className='in form-select w-50' onChange={(e) => updateOrderStatus(e.target.value, order._id)} defaultValue={order.orderStatus}>
+                                                                                <option value="Active" disabled={order.orderStatus !== "Active"}>Active</option>
+                                                                                <option value="Prepared">Prepared</option>
+                                                                                <option value="Delivered">Delivered</option>
+                                                                            </select>
+                                                                        </td>
+                                                                    }
+                                                                </tr>
+                                                            </>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                ))}
+                            </Row>
                         </Container>
                     }
                 </div>
