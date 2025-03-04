@@ -50,7 +50,7 @@ export default function PastOrdersScreen() {
     const fetchOrders = async () => {
         dispatch({ type: 'FETCH_REQUEST' });
         try {
-            const response = await axios.get(`/order/get-all-orders-for-restaurant/${restaurantId}`);
+            const response = await axios.get(`https://zesty-backend.onrender.com/order/get-all-orders-for-restaurant/${restaurantId}`);
             dispatch({ type: 'FETCH_SUCCESS', payload: response.data });
         } catch (error) {
             dispatch({ type: 'FETCH_FAIL', payload: error.response?.data?.message || error.message });
@@ -96,7 +96,7 @@ export default function PastOrdersScreen() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {orders.map((order, i) => (
+                                {orders.slice(0).reverse().map((order, i) => (
                                     <tr key={i}>
                                         <td>{order._id}</td>
                                         <td>{new Date(order.createdAt).toLocaleDateString()}</td>
@@ -143,7 +143,7 @@ export default function PastOrdersScreen() {
                                                     {
                                                         restaurantMenu.map((menuItem) =>
                                                             item.itemId === menuItem._id &&
-                                                            <span className='me-3'>{menuItem.price}</span>
+                                                            <span className='me-3'>{(menuItem.price * 100) / 130}</span>
                                                         )}
                                                 </td>
                                             </tr>
