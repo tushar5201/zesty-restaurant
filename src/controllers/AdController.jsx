@@ -4,12 +4,15 @@ import { Card, Container } from 'react-bootstrap'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Loading from '../components/Loading';
+import MessageBox from '../components/MessageBox';
 
 export default function CreateAds() {
     const restaurantId = localStorage.getItem("restaurantId");
     const [image, setImage] = useState("");
     const [restaurantName, setRestroName] = useState("");
     const [mobile, setMobile] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const getData = async () => {
         const res = await axios.get(`https://zesty-backend.onrender.com/restaurant/get/${restaurantId}`);
@@ -19,6 +22,7 @@ export default function CreateAds() {
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        setLoading(true);
         getData();
         const data = {
             name: restaurantName,
@@ -65,7 +69,9 @@ export default function CreateAds() {
                                 <img src={URL.createObjectURL(image)} alt='category' height={'200px'} />
                             </div>
                         )}
-                        <Link className='btn btn-dark mt-5' onClick={submitHandler}>Pay Now</Link>
+                        {loading ? <Loading /> :
+                            <Link className='btn btn-dark mt-5' onClick={submitHandler}>Pay Now</Link>
+                        }
                     </form>
                 </Card>
             </Container>
@@ -92,6 +98,9 @@ export function UpdateAd() {
         error: "",
         ad: {}
     });
+
+    const [loading1, setLoading] = useState(false);
+
     const restaurantId = localStorage.getItem("restaurantId");
     const [image, setImage] = useState("");
     const { adId } = useParams();
@@ -114,6 +123,7 @@ export function UpdateAd() {
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        setLoading(true);
         const adData = new FormData();
         adData.append("image", image);
         adData.append("id", adId);
@@ -142,7 +152,7 @@ export function UpdateAd() {
                 <Card className='text-center mt-5 w-50 mx-auto p-5'>
                     <h3><u>Update Advertisement</u></h3>
 
-                    {loading ? <h3>Loading...</h3> : error ? error :
+                    {loading ? <Loading /> : error ? <MessageBox>{error}</MessageBox> :
                         <form action="">
                             <div className="form-floating mt-5 mb-2">
                                 <input type="file" name="image" accept='image/png, image/jpeg' onChange={(e) => setImage(e.target.files[0])} id="image" placeholder='Add your advertisement image' className='in form-control' style={{ width: "100%" }} required />
@@ -156,7 +166,9 @@ export function UpdateAd() {
                                 </div>
                             )}
                             <img src={ad.image} alt={ad} srcset="" width={"400px"} /> <br />
-                            <Link className='btn btn-dark mt-5' onClick={submitHandler}>Submit</Link>
+                            {loading ? <Loading /> :
+                                <Link className='btn btn-dark mt-5' onClick={submitHandler}>Submit</Link>
+                            }
                         </form>
                     }
                 </Card>

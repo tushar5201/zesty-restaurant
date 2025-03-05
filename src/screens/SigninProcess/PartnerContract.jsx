@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react'
 import { Card, Col, Form, Row } from 'react-bootstrap'
 import { SigninContext } from '../../context/signinContext';
 import { toast } from 'react-toastify';
+import Loading from '../../components/Loading';
 
 export default function PartnerContract({ onBack }) {
 
@@ -90,10 +91,11 @@ export default function PartnerContract({ onBack }) {
                         <button type='submit' onClick={handleBack} className='btn-continue'>Back</button>
                     </Col>
                     <Col>
-                        <button type='submit' className='btn-continue' onClick={() => setLoading(true)}>Pay Now</button>
+                        {loading ? <Loading /> :
+                            <button type='submit' className='btn-continue' onClick={() => setLoading(true)}>Pay Now</button>
+                        }
                     </Col>
                 </Row>
-                {loading && <h1>Loading...</h1>}
             </Form>
         </div>
     )

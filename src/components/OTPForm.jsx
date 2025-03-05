@@ -3,10 +3,12 @@ import { Card } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import Loading from './Loading';
 
 export default function OTPForm({ onNext, phone, id }) {
     const navigate = useNavigate();
     const [otp, setOtp] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const [timeLeft, setTimeLeft] = useState(60);
     useEffect(() => {
@@ -23,6 +25,7 @@ export default function OTPForm({ onNext, phone, id }) {
     };
 
     const handleSubmit = async () => {
+        setLoading(true);
         try {
             if (otp === "") {
                 toast.error("Enter OTP");
@@ -52,7 +55,7 @@ export default function OTPForm({ onNext, phone, id }) {
     const checkExist = async () => {
         try {
             const res = await axios.get(`https://zesty-backend.onrender.com/restaurant/check-exist/${phone.contact}`);
-            if(res.status === 200) {
+            if (res.status === 200) {
                 console.log(res.data);
                 console.log(res.data.restaurantData._id);
                 localStorage.setItem("restaurantId", res.data.restaurantData._id);
@@ -83,7 +86,9 @@ export default function OTPForm({ onNext, phone, id }) {
                             `Resend OTP(00:${timeLeft})`
                     }
                 </p>
-                <button className="btn mt-2 btn-submit" onClick={handleSubmit}>Continue</button>
+                {loading ? <Loading /> :
+                    <button className="btn mt-2 btn-submit" onClick={handleSubmit}>Continue</button>
+                }
 
                 <div className="mt-1 text-center">
                     <p style={{ color: "#aaa" }}>By loggin in, I agree to Zesty's <a href="" style={{ color: "#222" }}>terms & conditions</a></p>

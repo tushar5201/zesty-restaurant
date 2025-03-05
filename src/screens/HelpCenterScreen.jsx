@@ -5,6 +5,7 @@ import { Card, Container } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../components/Loading';
 
 export default function HelpCenterScreen() {
     const [name, setName] = useState("");
@@ -50,7 +51,7 @@ export default function HelpCenterScreen() {
 
                         {!loading ?
                             <button className='btn btn-dark mt-5' onClick={handleSubmit}>Submit</button>
-                            : <h5>Sending...</h5>
+                            : <Loading />
                         }
                     </Card>
                 </Container>

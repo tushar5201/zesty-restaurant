@@ -15,6 +15,7 @@ import HelpCenterScreen from "./screens/HelpCenterScreen";
 import CreateAds, { UpdateAd } from "./controllers/AdController";
 import ActiveOrderScreen from "./screens/ActiveOrderScreen";
 import PastOrderScreen from "./screens/PastOrderScreen";
+import UpdateOutlet from "./controllers/UpdateOutlet";
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
             <Route path="/restaurant/create-ads" element={<CreateAds />} />
             <Route path="/restaurant/update-ad/:adId" element={<UpdateAd />} />
             <Route path="/restaurant/info" element={<OutletInfoScreen />} />
+            <Route path="/restaurant/update-outlet" element={<UpdateOutlet />} />
             <Route path="/restaurant/help" element={<HelpCenterScreen />} />
           </Routes>
         </SigninProvider>

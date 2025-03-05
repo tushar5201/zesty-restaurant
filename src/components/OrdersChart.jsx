@@ -63,7 +63,7 @@ export default function OrdersChart() {
     const fetchOrders = async () => {
         dispatchOrders({ type: 'FETCH_REQUEST' });
         try {
-            const orders = await axios.get(`/order/get-all-orders-for-restaurant/${restaurantId}`);
+            const orders = await axios.get(`https://zesty-backend.onrender.com/order/get-all-orders-for-restaurant/${restaurantId}`);
             calculateOrderStatus(orders.data); // Calculate order status counts
             aggregateOrdersByDay(orders.data); // Aggregate orders by day
             dispatchOrders({ type: 'FETCH_SUCCESS', payload: orders.data });

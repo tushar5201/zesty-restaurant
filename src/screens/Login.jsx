@@ -4,7 +4,7 @@ import "../assets/css/login.css";
 import LoginForm from "../components/LoginForm";
 import OTPForm from "../components/OTPForm";
 
-const Login = () => {  
+const Login = () => {
 
   const [step, setStep] = useState(1);
   const [user, setUser] = useState(null);
@@ -12,7 +12,7 @@ const Login = () => {
 
   const handleNext = (data) => {
     setUser({ ...user, ...data });
-    setId({...id, ...data});
+    setId({ ...id, ...data });
     setStep(step + 1);
   };
 

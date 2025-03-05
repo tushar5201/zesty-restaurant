@@ -28,10 +28,6 @@ export default function RestaurantInformationForm({ onNext }) {
             checkPaymentStatus();
     }, [restaurantId]);
 
-    const handleContinue = () => {
-        onNext();
-    }
-
     const { formData, setFormData } = useContext(SigninContext);
 
     const [pincode, setPincode] = useState("");

@@ -3,6 +3,8 @@ import React from 'react'
 import { useReducer } from 'react';
 import { useEffect } from 'react';
 import { Card, Col, Row } from 'react-bootstrap'
+import Loading from './Loading';
+import MessageBox from './MessageBox';
 
 const reducerOrders = (state, action) => {
     switch (action.type) {
@@ -88,7 +90,7 @@ export default function PastOrdersandPartners() {
                             </tr>
                         </thead>
                         <tbody>
-                            {loadingOrders ? <h3>Loading...</h3> : errorOrders ? errorOrders :
+                            {loadingOrders ? <Loading /> : errorOrders ? <MessageBox>{errorOrders}</MessageBox> :
                                 orders.slice(0).reverse().map((order, index) => (
                                     index < 5 &&
                                     <tr>
@@ -108,26 +110,6 @@ export default function PastOrdersandPartners() {
                     </table>
                 </Card>
             </Col>
-            {/* <Col md={4}>
-                <Card className='graph-card' style={{ marginLeft: "-10px", marginRight: "15px" }}>
-                    <h5>Top Partner</h5>
-                    <table className='table'>
-                        <tbody>
-                            {loadingRestaurant ? <h3>Loading....</h3> : errorRestaurant ? errorRestaurant :
-                                restaurants.map((restaurant, index) => (
-                                    index < 5 &&
-                                    <tr key={index}>
-                                        <td>
-                                            <img src={restaurant.logoImg} style={{ width: "150px", height: "100px" }} alt="" />
-                                        </td>
-                                        <td className='justify-content-center align-content-center'><h6>{restaurant.restaurantName}</h6></td>
-                                    </tr>
-                                ))
-                            }
-                        </tbody>
-                    </table>
-                </Card>
-            </Col> */}
         </Row>
     )
 }

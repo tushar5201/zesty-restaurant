@@ -5,6 +5,8 @@ import { Card, Col, Container, Row } from 'react-bootstrap'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { io } from "socket.io-client"
+import Loading from "../components/Loading";
+import MessageBox from "../components/MessageBox";
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -48,17 +50,6 @@ export default function ActiveOrderScreen() {
     });
 
     const restaurantId = localStorage.getItem("restaurantId");
-
-    const formatTime = (time) => {
-        const date = new Date(time);
-        return date.toLocaleTimeString("en-IN", {
-            timeZone: 'Asia/Kolkata',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true
-        });
-    };
 
     const fetchOrderData = async () => {
         dispatch({ type: 'FETCH_REQUEST' });
@@ -132,7 +123,7 @@ export default function ActiveOrderScreen() {
                 <div style={{ padding: "20px" }}>
                     <h1>Active Orders</h1>
 
-                    {loading ? <h5>Loading...</h5> : error ? error :
+                    {loading ? <Loading /> : error ? <MessageBox>{error}</MessageBox> :
                         <Container className='mt-4'>
                             <Row>
                                 {orders.slice(0).reverse().map((order) => (
@@ -152,7 +143,7 @@ export default function ActiveOrderScreen() {
                                             <Card.Body>
                                                 <table className='table'>
                                                     <tbody>
-                                                        {loadingRes ? <h6>Loading...</h6> : errorRes ? errorRes :
+                                                        {loadingRes ? <Loading /> : errorRes ? <MessageBox>{errorRes}</MessageBox> :
                                                             <>
                                                                 {order.order.map((item) => (
                                                                     <tr>
