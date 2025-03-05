@@ -202,7 +202,7 @@ export default function AddMenuItem() {
                         </Accordion>
 
                         {/* variants accordion */}
-                        <Accordion className='mt-3'>
+                        {/* <Accordion className='mt-3'>
                             <Accordion.Item eventKey='0'>
                                 <Accordion.Header>Variants</Accordion.Header>
                                 <Accordion.Body>
@@ -253,10 +253,10 @@ export default function AddMenuItem() {
                                     </Row>
                                 </Accordion.Body>
                             </Accordion.Item>
-                        </Accordion>
+                        </Accordion> */}
 
                         {/* Addones accordion */}
-                        <Accordion className='mt-3'>
+                        {/* <Accordion className='mt-3'>
                             <Accordion.Item eventKey='0'>
                                 <Accordion.Header>Add ones</Accordion.Header>
                                 <Accordion.Body>
@@ -281,7 +281,7 @@ export default function AddMenuItem() {
 
                                 </Accordion.Body>
                             </Accordion.Item>
-                        </Accordion>
+                        </Accordion> */}
 
                         <Link className='btn btn-dark mt-5' onClick={submitHandler}>Add Menu Item</Link>
                     </form>
@@ -319,11 +319,11 @@ export function UpdateMenu() {
     const [category, setCategory] = useState("");
     const [price, setPrice] = useState("0");
     const [packagingCharge, setPackagingCharge] = useState("0");
-    const [small, setSmall] = useState({ price: "", quantity: "" });
-    const [medium, setMedium] = useState({ price: "", quantity: "" });
-    const [large, setLarge] = useState({ price: "", quantity: "" });
-    const [variant, setVariant] = useState({ small: small, medium: medium, large: large });
-    const [addOnes, setAddOnes] = useState([{ name: "", price: "" }]);
+    // const [small, setSmall] = useState({ price: "", quantity: "" });
+    // const [medium, setMedium] = useState({ price: "", quantity: "" });
+    // const [large, setLarge] = useState({ price: "", quantity: "" });
+    // const [variant, setVariant] = useState({ small: small, medium: medium, large: large });
+    // const [addOnes, setAddOnes] = useState([{ name: "", price: "" }]);
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -470,7 +470,7 @@ export function UpdateMenu() {
                             </Accordion>
 
                             {/* variants accordion */}
-                            <Accordion className='mt-3'>
+                            {/* <Accordion className='mt-3'>
                                 <Accordion.Item eventKey='0'>
                                     <Accordion.Header>Variants</Accordion.Header>
                                     <Accordion.Body>
@@ -521,7 +521,7 @@ export function UpdateMenu() {
                                         </Row>
                                     </Accordion.Body>
                                 </Accordion.Item>
-                            </Accordion>
+                            </Accordion> */}
 
                             {/* Addones accordion */}
                             {/* <Accordion className='mt-3'>
@@ -550,6 +550,8 @@ export function UpdateMenu() {
                                     </Accordion.Body>
                                 </Accordion.Item>
                             </Accordion> */}
+
+                            <button className='btn btn-dark'>Submit</button>
                         </form>
                     }
                 </Card>
