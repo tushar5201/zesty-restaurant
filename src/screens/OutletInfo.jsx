@@ -3,6 +3,8 @@ import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Loading from "../components/Loading"
+import MessageBox from "../components/MessageBox"
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -47,7 +49,7 @@ export default function OutletScreen() {
         <div style={{ padding: '20px' }}>
           <h2 style={{ margin: '15px 0 5px 20px' }}>Your Outlet Information</h2>
 
-          {loading ? <h3>Loading</h3> : error ? error :
+          {loading ? <Loading /> : error ? <MessageBox>{error}</MessageBox> :
             <table className='table mt-5 m-2'>
               <thead>
                 <tr>
