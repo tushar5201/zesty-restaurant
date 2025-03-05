@@ -5,6 +5,8 @@ import { Col, Modal, Row } from 'react-bootstrap'
 import { Link } from "react-router-dom"
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import Loading from '../components/Loading'
+import MessageBox from '../components/MessageBox'
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -97,7 +99,7 @@ export default function MenuScreen() {
                             </tr>
                         </thead>
 
-                        {loading ? <h3>Loading...</h3> : error ? { error } : (
+                        {loading ? <Loading /> : error ? <MessageBox>{error}</MessageBox> : (
                             <tbody>
                                 {search === "" && menu.menu.map((menuItem, i) => (
                                     <tr key={i} style={{ verticalAlign: "middle" }}>
@@ -134,7 +136,6 @@ export default function MenuScreen() {
                                 <Modal.Body>
                                     item Name : <h2 className='ms-3'>{details.name}</h2>
                                     item Image : <br />
-                                    {/* <img className='ms-5' src={`https://zesty-backend.onrender.com/menu/get-menu-image/${details._id}`} alt={details.name} width={150} /><br /> */}
                                     <img src={details.image} className='mt-5' alt={details.name} width={150} srcset="" /><br />
                                     <table className='table'>
                                         <tbody>
@@ -154,51 +155,6 @@ export default function MenuScreen() {
                                                 <td>Item Category</td>
                                                 <td>{details.category}</td>
                                             </tr>
-                                            {/* {details.addOnes[0].name === "" ? (<h5 className='mt-3'>No addones set</h5>) : (
-                                                <table style={{ width: "100%" }} className='table'>
-                                                    <tbody>
-                                                        <h5 className='mt-2'>Add ones</h5>
-                                                        {details.addOnes.map((addon) => (
-                                                            <tr>
-                                                                <td>{addon.name}</td>
-                                                                <td>{addon.price} ₹</td>
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
-                                            )
-                                            } */}
-
-                                            {/* {details.variant.small.price === "" ? (<h5 className='mt-3'>No variants selected</h5>) :
-                                                <div>
-                                                    <h5 className='mt-2'>Variants</h5>
-                                                    <table style={{ width: "100%" }} className='table'>
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Size</th>
-                                                                <th>Price(₹)</th>
-                                                                <th>Quantity</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>Small</td>
-                                                                <td>{details.variant.small.price}</td>
-                                                                <td>{details.variant.small.quantity}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Medium</td>
-                                                                <td>{details.variant.medium.price}</td>
-                                                                <td>{details.variant.medium.quantity}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Large</td>
-                                                                <td>{details.variant.large.price}</td>
-                                                                <td>{details.variant.large.quantity}</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>} */}
                                         </tbody>
                                     </table>
                                 </Modal.Body>

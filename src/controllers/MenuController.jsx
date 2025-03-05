@@ -1,9 +1,11 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import Header from '../components/Header'
-import { Accordion, Button, Card, Col, Container, Row } from 'react-bootstrap'
+import { Accordion, Card, Col, Container, Row } from 'react-bootstrap'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Loading from '../components/Loading';
+import MessageBox from '../components/MessageBox';
 
 export default function AddMenuItem() {
     const [name, setName] = useState("");
@@ -14,25 +16,21 @@ export default function AddMenuItem() {
     const [category, setCategory] = useState("");
     const [price, setPrice] = useState("0");
     const [packagingCharge, setPackagingCharge] = useState("0");
-    const [small, setSmall] = useState({ price: "", quantity: "" });
-    const [medium, setMedium] = useState({ price: "", quantity: "" });
-    const [large, setLarge] = useState({ price: "", quantity: "" });
-    const [variant, setVariant] = useState({ small: small, medium: medium, large: large });
-    const [addOnes, setAddOnes] = useState([{ name: "", price: "" }]);
     const navigate = useNavigate();
     const restaurantId = localStorage.getItem("restaurantId");
 
-    const submitHandler = async (e) => {
+    const [loading, setLoading] = useState(false);
 
+    const submitHandler = async (e) => {
+        setLoading(true);
         if (name === "" || description === "" || foodType === "" || category === "" || price === "" || packagingCharge === "") {
             toast.dark("Field are mandatory to fill");
             return;
-        } 
-        if(price < 0 || packagingCharge <0) {
+        }
+        if (price < 0 || packagingCharge < 0) {
             toast.dark("price & packaging carce should positive integers");
             return;
         }
-
         const finalPrice = ((parseInt(price) + parseInt(packagingCharge)) + (parseInt(price) + parseInt(packagingCharge)) * 0.3).toString();
         const menuItemData = new FormData();
         menuItemData.append("name", name);
@@ -42,13 +40,9 @@ export default function AddMenuItem() {
         menuItemData.append("category", category);
         menuItemData.append("price", finalPrice);
         menuItemData.append("packagingCharge", packagingCharge);
-        menuItemData.append("variant", JSON.stringify(variant));
-        menuItemData.append("addOnes", JSON.stringify(addOnes));
         menuItemData.append("restaurantId", restaurantId);
-
         try {
             const res = await axios.post("https://zesty-backend.onrender.com/menu/add-item", menuItemData, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true });
-            // const res = await axios.post("/menu/add-item", menuItemData, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true });
             if (res.status === 200) {
                 toast.dark("Menu Added");
                 navigate("/restaurant/menu");
@@ -76,20 +70,9 @@ export default function AddMenuItem() {
         }
     }
 
-    const handleAddonChange = (e, i) => {
-        const { name, value } = e.target;
-        const changeVal = [...addOnes];
-        changeVal[i][name] = value;
-        setAddOnes(changeVal);
-    }
-
     useEffect(() => {
         fetchCategories();
     }, []);
-
-    useEffect(() => {
-        setVariant({ ...variant, small: small, medium: medium, large: large });
-    }, [small, medium, large]);
 
     return (
         <div style={{ width: "100%", padding: "0", margin: "0" }}>
@@ -201,89 +184,9 @@ export default function AddMenuItem() {
                             </Accordion.Item>
                         </Accordion>
 
-                        {/* variants accordion */}
-                        {/* <Accordion className='mt-3'>
-                            <Accordion.Item eventKey='0'>
-                                <Accordion.Header>Variants</Accordion.Header>
-                                <Accordion.Body>
-                                    <label htmlFor="">For Small Container</label>
-                                    <Row>
-                                        <Col>
-                                            <div className="form-floating mt-3 mb-2">
-                                                <input type="number" name="price" value={small.price} onChange={(e) => setSmall({ ...small, price: e.target.value })} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                <label style={{ color: "#222" }}>Price</label>
-                                            </div>
-                                        </Col>
-                                        <Col>
-                                            <div className="form-floating mt-3 mb-2">
-                                                <input type="text" name="quantity" value={small.quantity} onChange={(e) => setSmall({ ...small, quantity: e.target.value })} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                <label style={{ color: "#222" }}>Quantity</label>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                    <label htmlFor="">For Medium Container</label>
-                                    <Row>
-                                        <Col>
-                                            <div className="form-floating mt-3 mb-2">
-                                                <input type="number" name="price" value={medium.price} onChange={(e) => setMedium({ ...medium, price: e.target.value })} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                <label style={{ color: "#222" }}>Price</label>
-                                            </div>
-                                        </Col>
-                                        <Col>
-                                            <div className="form-floating mt-3 mb-2">
-                                                <input type="text" name="quantity" value={medium.quantity} onChange={(e) => setMedium({ ...medium, quantity: e.target.value })} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                <label style={{ color: "#222" }}>Quantity</label>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                    <label htmlFor="">For Large Container</label>
-                                    <Row>
-                                        <Col>
-                                            <div className="form-floating mt-3 mb-2">
-                                                <input type="number" name="price" value={large.price} onChange={(e) => setLarge({ ...large, price: e.target.value })} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                <label style={{ color: "#222" }}>Price</label>
-                                            </div>
-                                        </Col>
-                                        <Col>
-                                            <div className="form-floating mt-3 mb-2">
-                                                <input type="text" name="quantity" value={large.quantity} onChange={(e) => setLarge({ ...large, quantity: e.target.value })} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                <label style={{ color: "#222" }}>Quantity</label>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                </Accordion.Body>
-                            </Accordion.Item>
-                        </Accordion> */}
-
-                        {/* Addones accordion */}
-                        {/* <Accordion className='mt-3'>
-                            <Accordion.Item eventKey='0'>
-                                <Accordion.Header>Add ones</Accordion.Header>
-                                <Accordion.Body>
-                                    <Button className='btn btn-dark' onClick={() => setAddOnes([...addOnes, { name: "", price: "" }])}>Add</Button>
-
-                                    {addOnes.map((addon, i) => (
-                                        <Row>
-                                            <Col lg={9}>
-                                                <div className="form-floating mt-3 mb-2">
-                                                    <input type="text" name="name" value={addon.name} onChange={(e) => handleAddonChange(e, i)} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                    <label style={{ color: "#222" }}>Name</label>
-                                                </div>
-                                            </Col>
-                                            <Col>
-                                                <div className="form-floating mt-3 mb-2">
-                                                    <input type="number" name="price" value={addon.price} onChange={(e) => handleAddonChange(e, i)} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                    <label style={{ color: "#222" }}>Price</label>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    ))}
-
-                                </Accordion.Body>
-                            </Accordion.Item>
-                        </Accordion> */}
-
-                        <Link className='btn btn-dark mt-5' onClick={submitHandler}>Add Menu Item</Link>
+                        {loading ? <Loading /> :
+                            <Link className='btn btn-dark mt-5' onClick={submitHandler}>Add Menu Item</Link>
+                        }
                     </form>
                 </Card>
             </Container>
@@ -325,6 +228,8 @@ export function UpdateMenu() {
     // const [variant, setVariant] = useState({ small: small, medium: medium, large: large });
     // const [addOnes, setAddOnes] = useState([{ name: "", price: "" }]);
     const navigate = useNavigate();
+
+    const [loading1, setLoading] = useState(false);
     const { id } = useParams();
 
     const fetchData = async () => {
@@ -358,13 +263,47 @@ export function UpdateMenu() {
         setFoodType(option);
     };
 
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            let finalPrice = "";
+            if (price !== "") {
+                finalPrice = ((parseInt(price) + parseInt(packagingCharge)) + (parseInt(price) + parseInt(packagingCharge)) * 0.3).toString();
+            }
+            const menuData = new FormData();
+            menuData.append("id", id);
+            menuData.append("name", name);
+            menuData.append("description", description);
+            menuData.append("image", image);
+            menuData.append("foodType", foodType);
+            menuData.append("category", category);
+            menuData.append("price", finalPrice);
+            menuData.append("packagingCharge", packagingCharge);
+            const res = await axios.post("https://zesty-backend.onrender.com/menu/update-item", menuData, {
+                headers: { "Content-Type": "multipart/form-data" },
+                withCredentials: true
+            });
+            if (res.status === 200) {
+                toast.dark("Updated.");
+                navigate("/restaurant/menu");
+            } else if (res.status === 405) {
+                toast.dark("Updating failed.");
+            } else {
+                toast.dark("internal error");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div style={{ width: "100%", padding: "0", margin: "0" }}>
             <Header />
             <Container>
                 <Card className='text-center mt-5 w-50 mx-auto p-5'>
                     <h3><u>Update Menu Item</u></h3>
-                    {loading ? <h1>Loading...</h1> : error ? error :
+                    {loading ? <Loading /> : error ? <MessageBox>{error}</MessageBox> :
                         <form action="">
                             <div className="form-floating mt-5 mb-2">
                                 <input type="text" name="name" defaultValue={menuItem.name} onChange={(e) => setName(e.target.value)} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
@@ -469,89 +408,9 @@ export function UpdateMenu() {
                                 </Accordion.Item>
                             </Accordion>
 
-                            {/* variants accordion */}
-                            {/* <Accordion className='mt-3'>
-                                <Accordion.Item eventKey='0'>
-                                    <Accordion.Header>Variants</Accordion.Header>
-                                    <Accordion.Body>
-                                        <label htmlFor="">For Small Container</label>
-                                        <Row>
-                                            <Col>
-                                                <div className="form-floating mt-3 mb-2">
-                                                    <input type="number" name="price" defaultValue={menuItem.variant.small.price} onChange={(e) => setSmall({ ...small, price: e.target.value })} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                    <label style={{ color: "#222" }}>Price</label>
-                                                </div>
-                                            </Col>
-                                            <Col>
-                                                <div className="form-floating mt-3 mb-2">
-                                                    <input type="text" name="quantity" defaultValue={menuItem.variant.small.quantity} onChange={(e) => setSmall({ ...small, quantity: e.target.value })} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                    <label style={{ color: "#222" }}>Quantity</label>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                        <label htmlFor="">For Medium Container</label>
-                                        <Row>
-                                            <Col>
-                                                <div className="form-floating mt-3 mb-2">
-                                                    <input type="number" name="price" defaultValue={menuItem.variant.medium.price} onChange={(e) => setMedium({ ...medium, price: e.target.value })} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                    <label style={{ color: "#222" }}>Price</label>
-                                                </div>
-                                            </Col>
-                                            <Col>
-                                                <div className="form-floating mt-3 mb-2">
-                                                    <input type="text" name="quantity" defaultValue={menuItem.variant.medium.quantity} onChange={(e) => setMedium({ ...medium, quantity: e.target.value })} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                    <label style={{ color: "#222" }}>Quantity</label>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                        <label htmlFor="">For Large Container</label>
-                                        <Row>
-                                            <Col>
-                                                <div className="form-floating mt-3 mb-2">
-                                                    <input type="number" name="price" defaultValue={menuItem.variant.large.price} onChange={(e) => setLarge({ ...large, price: e.target.value })} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                    <label style={{ color: "#222" }}>Price</label>
-                                                </div>
-                                            </Col>
-                                            <Col>
-                                                <div className="form-floating mt-3 mb-2">
-                                                    <input type="text" name="quantity" defaultValue={menuItem.variant.large.quantity} onChange={(e) => setLarge({ ...large, quantity: e.target.value })} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                    <label style={{ color: "#222" }}>Quantity</label>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                            </Accordion> */}
-
-                            {/* Addones accordion */}
-                            {/* <Accordion className='mt-3'>
-                                <Accordion.Item eventKey='0'>
-                                    <Accordion.Header>Add ones</Accordion.Header>
-                                    <Accordion.Body>
-                                        <Button className='btn btn-dark' onClick={() => setAddOnes([...addOnes, { name: "", price: "" }])}>Add</Button>
-
-                                        {addOnes.map((addon, i) => (
-                                            <Row>
-                                                <Col lg={9}>
-                                                    <div className="form-floating mt-3 mb-2">
-                                                        <input type="text" name="name" value={addon.name} onChange={(e) => handleAddonChange(e, i)} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                        <label style={{ color: "#222" }}>Name</label>
-                                                    </div>
-                                                </Col>
-                                                <Col>
-                                                    <div className="form-floating mt-3 mb-2">
-                                                        <input type="number" name="price" value={addon.price} onChange={(e) => handleAddonChange(e, i)} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
-                                                        <label style={{ color: "#222" }}>Price</label>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        ))}
-
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                            </Accordion> */}
-
-                            <button className='btn btn-dark'>Submit</button>
+                            {loading1 ? <Loading /> :
+                                <button className='btn btn-dark' onClick={handleUpdate}>Update</button>
+                            }
                         </form>
                     }
                 </Card>

@@ -1,8 +1,10 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
-import { Row, Col, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import axios from "axios";
+import Loading from '../components/Loading';
+import MessageBox from '../components/MessageBox';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -84,7 +86,7 @@ export default function PastOrdersScreen() {
                 <Header />
                 <div style={{ padding: "20px" }}>
                     <h2>Past Orders</h2>
-                    {loading ? <h3>Loading...</h3> : error ? <h3>{error}</h3> : (
+                    {loading ? <Loading /> : error ? <MessageBox>{error}</MessageBox> : (
                         <table className='table mt-5'>
                             <thead>
                                 <tr>
@@ -129,7 +131,7 @@ export default function PastOrdersScreen() {
                         <h5>Items:</h5>
                         <table className='table'>
                             <tbody>
-                                {loadingRes ? <h6>Loading...</h6> : errorRes ? errorRes :
+                                {loadingRes ? <Loading /> : errorRes ? <MessageBox>{errorRes}</MessageBox> :
                                     <>
                                         {selectedOrder.order.map((item) => (
                                             <tr>
@@ -168,11 +170,6 @@ export default function PastOrdersScreen() {
                                                     <span className='text-danger bg-danger bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Rejected</span>
                                                 }
                                             </td>
-                                            {/* <td>{data.verified === "Pending" ?
-                                                <span className='text-warning bg-warning bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Pending</span>
-                                                : data.verified === "Rejected" ? <span className='text-danger bg-danger bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Rejected</span>
-                                                    : data.verified === "Approved" && <span className='text-success bg-success bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Approved</span>
-                                            }</td> */}
                                         </tr>
                                     </>
                                 }

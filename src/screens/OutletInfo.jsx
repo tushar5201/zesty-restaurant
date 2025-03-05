@@ -1,8 +1,8 @@
-import React, { useReducer, useEffect, useState } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
-import { Modal } from 'react-bootstrap';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -21,11 +21,9 @@ export default function OutletScreen() {
   const [{ loading, error, outlet }, dispatch] = useReducer(reducer, {
     loading: true,
     error: '',
-    outlet: [],
+    outlet: {},
   });
 
-  const [showDetails, setShowDetails] = useState(true);
-  const [data, setData] = useState(null);
   const restaurantId = localStorage.getItem("restaurantId");
 
   useEffect(() => {
@@ -39,12 +37,7 @@ export default function OutletScreen() {
       }
     };
     fetchData();
-  }, []);
-
-  const handleShow = (details) => {
-    setData(details);
-    setShowDetails(true);
-  };
+  }, [restaurantId]);
 
   return (
     <div className="app">
@@ -70,6 +63,10 @@ export default function OutletScreen() {
                 <tr>
                   <td>Restaurant Name</td>
                   <td><h5>{outlet.restaurantName}</h5></td>
+                </tr>
+                <tr>
+                  <td>Cuisines</td>
+                  <td>{outlet.cuisines}</td>
                 </tr>
                 <tr>
                   <td>Owner Name</td>
@@ -125,6 +122,11 @@ export default function OutletScreen() {
                     : outlet.verified === "Rejected" ? <span className='text-danger bg-danger bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Rejected</span>
                       : outlet.verified === "Approved" && <span className='text-success bg-success bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>Approved</span>
                   }</td>
+                </tr>
+                <tr>
+                  <td>
+                    <Link to="/restaurant/update-outlet" className='btn btn-dark w-50 align-items-center'>Edit Outlet</Link>
+                  </td>
                 </tr>
               </tbody>
             </table>

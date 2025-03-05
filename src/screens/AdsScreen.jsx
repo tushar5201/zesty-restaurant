@@ -4,6 +4,7 @@ import Header from '../components/Header'
 import Pricing from '../components/Pricing'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Loading from '../components/Loading';
 
 export default function AdsScreen() {
     const restaurantId = localStorage.getItem("restaurantId");
@@ -31,7 +32,7 @@ export default function AdsScreen() {
                 <div style={{ padding: "20px" }}>
                     <h1>Ads</h1>
                     {
-                        loading ? <h1>Loading...</h1> :
+                        loading ? <Loading /> :
                             ad === null ? (
                                 <Pricing />
                             ) : (
