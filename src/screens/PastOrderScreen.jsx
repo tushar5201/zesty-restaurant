@@ -110,7 +110,7 @@ export default function PastOrdersScreen() {
                                         </td>
                                         <td>₹ {order.totalAmountRestaurant}</td>
                                         <td>
-                                            <button onClick={() => handleShowDetails(order)}>Details</button>
+                                            <button className='btn btn-outline-dark' onClick={() => handleShowDetails(order)}>Details</button>
                                         </td>
                                     </tr>
                                 ))}
@@ -143,7 +143,7 @@ export default function PastOrdersScreen() {
                                                     {
                                                         restaurantMenu.map((menuItem) =>
                                                             item.itemId === menuItem._id &&
-                                                            <span className='me-3'>{(menuItem.price * 100) / 130}</span>
+                                                            <span className='me-3'>{(((menuItem.price * 100) / 130) * item.quantity).toFixed(2)}</span>
                                                         )}
                                                 </td>
                                             </tr>
@@ -153,7 +153,7 @@ export default function PastOrdersScreen() {
                                         <tr>
                                             <th>Total Amount</th>
                                             <th className="text-end">
-                                                ₹ {selectedOrder.totalAmountRestaurant}
+                                                ₹ {(selectedOrder.totalAmountRestaurant)}
                                             </th>
                                         </tr>
 

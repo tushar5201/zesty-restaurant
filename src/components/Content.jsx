@@ -32,13 +32,13 @@ export default function Content() {
         }
     };
 
-    const calculateRevenue = (orders) => {        
+    const calculateRevenue = (orders) => {
         let totalAmountRestaurants = 0;
         orders.forEach((order) => {
             order.orderStatus === "Delivered" &&
-                (totalAmountRestaurants += parseInt(order.totalAmountRestaurant) || 0)
+                (totalAmountRestaurants += (parseFloat(order.totalAmountRestaurant) * 100) / 130 || 0)
         });
-        setRevenue(totalAmountRestaurants); // Update the revenue state
+        setRevenue((totalAmountRestaurants).toFixed(2)); // Update the revenue state
     };
 
     useEffect(() => {

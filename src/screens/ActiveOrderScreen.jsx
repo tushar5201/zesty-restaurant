@@ -166,7 +166,7 @@ export default function ActiveOrderScreen() {
                                                                             {
                                                                                 restaurantMenu.map((menuItem) =>
                                                                                     item.itemId === menuItem._id &&
-                                                                                    <span className='me-3'>{(menuItem.price * 100) / 130}</span>
+                                                                                    <span className='me-3'>{(((menuItem.price * 100) / 130) * item.quantity).toFixed(2)}</span>
                                                                                 )}
                                                                         </td>
                                                                     </tr>

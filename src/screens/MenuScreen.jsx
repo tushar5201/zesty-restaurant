@@ -140,7 +140,7 @@ export default function MenuScreen() {
                                         <tbody>
                                             <tr>
                                                 <td>Item Price</td>
-                                                <td>{details.price}</td>
+                                                <td>{parseFloat((details.price * 100) / 130).toFixed(2)}</td>
                                             </tr>
                                             <tr>
                                                 <td>Item Description</td>
@@ -154,7 +154,7 @@ export default function MenuScreen() {
                                                 <td>Item Category</td>
                                                 <td>{details.category}</td>
                                             </tr>
-                                            {details.addOnes[0].name === "" ? (<h5 className='mt-3'>No addones set</h5>) : (
+                                            {/* {details.addOnes[0].name === "" ? (<h5 className='mt-3'>No addones set</h5>) : (
                                                 <table style={{ width: "100%" }} className='table'>
                                                     <tbody>
                                                         <h5 className='mt-2'>Add ones</h5>
@@ -167,9 +167,9 @@ export default function MenuScreen() {
                                                     </tbody>
                                                 </table>
                                             )
-                                            }
+                                            } */}
 
-                                            {details.variant.small.price === "" ? (<h5 className='mt-3'>No variants selected</h5>) :
+                                            {/* {details.variant.small.price === "" ? (<h5 className='mt-3'>No variants selected</h5>) :
                                                 <div>
                                                     <h5 className='mt-2'>Variants</h5>
                                                     <table style={{ width: "100%" }} className='table'>
@@ -198,7 +198,7 @@ export default function MenuScreen() {
                                                             </tr>
                                                         </tbody>
                                                     </table>
-                                                </div>}
+                                                </div>} */}
                                         </tbody>
                                     </table>
                                 </Modal.Body>
