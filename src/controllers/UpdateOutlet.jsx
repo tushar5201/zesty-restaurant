@@ -78,11 +78,14 @@ export default function UpdateOutlet() {
                 navigate("/restaurant/info");
             } else if (res.status === 405) {
                 toast.dark("Updating failed.");
+                setLoading(false);
             } else {
                 toast.dark("internal error");
+                setLoading(false);
             }
         } catch (error) {
             console.log(error);
+            setLoading(false);
         }
     }
 
