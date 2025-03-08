@@ -50,23 +50,28 @@ export default function RestaurantInformationForm({ onNext }) {
     }
 
     const fetchAddress = async (e) => {
-        setPincode(e.target.value.slice(0, 6));
-        setFormData({ ...formData, "pincode": pincode });
-        if (pincode.length === 6) {
-            try {
-                const res = await axios.get(`https://api.postalpincode.in/pincode/${pincode}`);
-                const data = res.data[0].PostOffice[0];
-                setFormData({ ...formData, "city": data.District, "state": data.State });
+        const enteredPincode = e.target.value.slice(0, 6); // Directly extract the first 6 digits
+        setPincode(enteredPincode);
+        setFormData({ ...formData, "pincode": enteredPincode });
 
-                for (let index = 0; index < res.data[0].PostOffice.length; index++) {
-                    const element = res.data[0].PostOffice[index].Name;
-                    area.push(element);
+        if (enteredPincode.length === 6) { // Use the updated value directly
+            try {
+                const res = await axios.get(`https://api.postalpincode.in/pincode/${enteredPincode}`);
+                if (res.data[0].Status === "Success") {
+                    const data = res.data[0].PostOffice[0];
+                    setFormData((prev) => ({ ...prev, "city": data.District, "state": data.State }));
+
+                    const areas = res.data[0].PostOffice.map((post) => post.Name);
+                    setArea(areas); // Assuming you have a state for 'area'
+                } else {
+                    toast.error("Invalid Pincode");
                 }
             } catch (error) {
                 toast.error("Invalid Pincode");
             }
         }
-    }
+    };
+
 
     const handleLogo = (e) => {
         setFormData({ ...formData, "logoImg": e.target.files[0] });
@@ -152,7 +157,8 @@ export default function RestaurantInformationForm({ onNext }) {
                             </div>
                         </Col>
                         <Col>
-                            <select className='form-select' onChange={(e) => setFormData({ ...formData, "selectedArea": e.target.value })} style={{ height: "55px", marginTop: "10px" }}>
+                            <select className='in form-select' onChange={(e) => setFormData({ ...formData, "selectedArea": e.target.value })} style={{ height: "55px", marginTop: "10px" }}>
+                                <option value="" selected disabled>-- Select Area --</option>
                                 {
                                     area.map((a) => (
                                         <option value={a}>{a}</option>
