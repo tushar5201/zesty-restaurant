@@ -44,10 +44,13 @@ export default function CreateAds() {
                 console.log(res1.data);
             } else {
                 toast.error("err in inserting.");
+                setLoading(false);
             }
             window.location.href = res.data.url;
         } catch (error) {
-
+            setLoading(false);
+            console.log(error);
+            toast.error("err in inserting.");
         }
     }
     return (
@@ -137,11 +140,14 @@ export function UpdateAd() {
                 navigate("/restaurant/ads");
             } else if (res.status === 405) {
                 toast.dark("Updating failed.");
+                setLoading(false);
             } else {
                 toast.dark("internal error");
+                setLoading(false);
             }
         } catch (error) {
             console.log(error);
+            setLoading(false);
         }
     }
 

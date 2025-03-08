@@ -24,10 +24,12 @@ export default function AddMenuItem() {
     const submitHandler = async (e) => {
         setLoading(true);
         if (name === "" || description === "" || foodType === "" || category === "" || price === "" || packagingCharge === "") {
+            setLoading(false);
             toast.dark("Field are mandatory to fill");
             return;
         }
         if (price < 0 || packagingCharge < 0) {
+            setLoading(false);
             toast.dark("price & packaging carce should positive integers");
             return;
         }
@@ -52,6 +54,7 @@ export default function AddMenuItem() {
                 toast.dark("internal server error");
             }
         } catch (error) {
+            setLoading(false);
             console.log(error);
             toast.dark("failed to add.")
         }
@@ -222,11 +225,6 @@ export function UpdateMenu() {
     const [category, setCategory] = useState("");
     const [price, setPrice] = useState("0");
     const [packagingCharge, setPackagingCharge] = useState("0");
-    // const [small, setSmall] = useState({ price: "", quantity: "" });
-    // const [medium, setMedium] = useState({ price: "", quantity: "" });
-    // const [large, setLarge] = useState({ price: "", quantity: "" });
-    // const [variant, setVariant] = useState({ small: small, medium: medium, large: large });
-    // const [addOnes, setAddOnes] = useState([{ name: "", price: "" }]);
     const navigate = useNavigate();
 
     const [loading1, setLoading] = useState(false);
@@ -289,11 +287,14 @@ export function UpdateMenu() {
                 navigate("/restaurant/menu");
             } else if (res.status === 405) {
                 toast.dark("Updating failed.");
+                setLoading(false);
             } else {
+                setLoading(false);
                 toast.dark("internal error");
             }
         } catch (error) {
             console.log(error);
+            setLoading(false);
         }
     }
 
