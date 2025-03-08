@@ -14,7 +14,7 @@ export default function PartnerContract({ onBack }) {
     const [loading, setLoading] = useState(false);
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const data = {
             name: formData["restaurantName"],
             mobileNumber: formData["mobile"],
@@ -75,7 +75,7 @@ export default function PartnerContract({ onBack }) {
                     </tbody>
                 </table>
             </Card>
-            <Form onSubmit={handleSubmit}>
+            <Form>
 
                 <Card className='form-card mt-4'>
                     <div className="form-check mt-2">
@@ -92,7 +92,7 @@ export default function PartnerContract({ onBack }) {
                     </Col>
                     <Col>
                         {loading ? <Loading /> :
-                            <button type='submit' className='btn-continue' onClick={() => setLoading(true)}>Pay Now</button>
+                            <button type='submit' className='btn-continue' onClick={handleSubmit}>Pay Now</button>
                         }
                     </Col>
                 </Row>
