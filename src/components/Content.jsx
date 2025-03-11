@@ -36,7 +36,7 @@ export default function Content() {
         let totalAmountRestaurants = 0;
         orders.forEach((order) => {
             order.orderStatus === "Delivered" &&
-                (totalAmountRestaurants += (parseFloat(order.totalAmountRestaurant) * 100) / 130 || 0)
+                (totalAmountRestaurants += parseFloat(order.totalAmountRestaurant) || 0)
         });
         setRevenue((totalAmountRestaurants).toFixed(2)); // Update the revenue state
     };

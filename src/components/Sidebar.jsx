@@ -21,9 +21,9 @@ export default function Sidebar({id}) {
     return (
         <div className={`sidebar ${sidebarClass}`}>
 
-            <form className="d-flex">
+            {/* <form className="d-flex">
                 <input className="form-control me-2 bg-light border-black ms-3" type="search" placeholder="Search" aria-label="Search" />
-            </form>
+            </form> */}
             <nav className="navigation">
                 <ul className="nav-list">
                     {

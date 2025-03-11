@@ -100,7 +100,7 @@ export default function PastOrdersScreen() {
                             <tbody>
                                 {orders.slice(0).reverse().map((order, i) => (
                                     <tr key={i}>
-                                        <td>{order._id}</td>
+                                        <td>{i+1}</td>
                                         <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                                         <td>
                                             {order.orderStatus === "Delivered" ?
