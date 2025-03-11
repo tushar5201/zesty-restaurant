@@ -126,7 +126,7 @@ export default function ActiveOrderScreen() {
                     {loading ? <Loading /> : error ? <MessageBox>{error}</MessageBox> :
                         <Container className='mt-4'>
                             <Row>
-                                {orders.slice(0).reverse().map((order) => (
+                                {orders.length === 0 ? <MessageBox>No Active orders</MessageBox> : orders.slice(0).reverse().map((order) => (
 
                                     <Col md={6}>
                                         <Card className='p-3 mt-3'>

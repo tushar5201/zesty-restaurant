@@ -103,9 +103,9 @@ export default function MenuScreen() {
                             <tbody>
                                 {search === "" && menu.menu.map((menuItem, i) => (
                                     <tr key={i} style={{ verticalAlign: "middle" }}>
-                                        <td>{menuItem._id}</td>
+                                        <td>{i+1}</td>
                                         <td><h5>{menuItem.name}</h5></td>
-                                        <td><button onClick={() => handleShow(menuItem)} style={{ textDecoration: "underline", background: "none", padding: 0, width: "100px" }}>Details</button></td>
+                                        <td><button onClick={() => handleShow(menuItem)} style={{ width: "100px" }} className='btn btn-outline-dark'>Details</button></td>
                                         <td><Link to={`/restaurant/update-menu-item/${menuItem._id}`} className='btn btn-primary'>Update</Link></td>
                                         <td><button className='btn btn-danger' onClick={() => handleDelete(menuItem._id)}>Delete</button></td>
                                     </tr>
@@ -118,9 +118,9 @@ export default function MenuScreen() {
                                     })
                                     .map((menuItem, i) => (
                                         <tr key={i} style={{ verticalAlign: "middle" }}>
-                                            <td>{menuItem._id}</td>
+                                            <td>{i+1}</td>
                                             <td><h5>{menuItem.name}</h5></td>
-                                            <td><button onClick={() => handleShow(menuItem)} style={{ textDecoration: "underline", background: "none", padding: 0, width: "100px" }}>Details</button></td>
+                                            <td><button onClick={() => handleShow(menuItem)} style={{ width: "100px" }} className='btn btn-outline-dark'>Details</button></td>
                                             <td><Link to={`/restaurant/update-menu-item/${menuItem._id}`} className='btn btn-primary'>Update</Link></td>
                                             <td><button className='btn btn-danger' onClick={() => handleDelete(menuItem._id)}>Delete</button></td>
                                         </tr>
