@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import Header from '../components/Header'
 import { Card, Container } from 'react-bootstrap';
@@ -28,6 +28,20 @@ export default function HelpCenterScreen() {
         }
     }
 
+    const restaurantId = localStorage.getItem("restaurantId");
+
+    const fetchData = async () => {
+        setLoading(true);
+        const res = await axios.get(`https://zesty-backend.onrender.com/restaurant/get/${restaurantId}`);
+        setName(res.data.restaurantName);
+        setEmail(res.data.email);
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     return (
         <div className='app'>
             <Sidebar id={7} />
@@ -38,12 +52,12 @@ export default function HelpCenterScreen() {
                     <h1 className='p-3'>Help Center</h1>
                     <Card className='text-center mt-3 w-50 mx-auto p-5'>
                         <div className="form-floating mt-3">
-                            <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
+                            <input type="text" name="name" value={name} id="name" placeholder='name' className='in form-control' style={{ width: "100%" }} disabled />
                             <label style={{ color: "#222" }}>Enter Name</label>
                         </div>
 
                         <div className="form-floating mb-2">
-                            <input type="email" name="name" value={email} onChange={(e) => setEmail(e.target.value)} id="name" placeholder='Category name' className='in form-control' style={{ width: "100%" }} />
+                            <input type="email" name="name" value={email} id="email" placeholder='email' className='in form-control' style={{ width: "100%" }} disabled />
                             <label style={{ color: "#222" }}>Enter Email</label>
                         </div>
 

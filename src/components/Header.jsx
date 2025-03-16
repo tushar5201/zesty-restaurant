@@ -4,6 +4,7 @@ import "../assets/css/header.css"
 import "../assets/css/sidebar.css"
 import axios from 'axios';
 import { SidebarContext } from '../context/sidebarContext';
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
     const [restroName, setRestroName] = useState("");
@@ -19,10 +20,11 @@ export default function Header() {
     }, [restaurantId]);
 
     const { toggleSidebar } = useContext(SidebarContext);
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         localStorage.removeItem("restaurantId");
-        window.location.reload(true);
+        navigate("/");
     }
 
     return (
