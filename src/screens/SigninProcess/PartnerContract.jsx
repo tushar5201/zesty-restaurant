@@ -12,22 +12,11 @@ export default function PartnerContract({ onBack }) {
     }
     const { formData } = useContext(SigninContext);
     const [loading, setLoading] = useState(false);
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        const data = {
-            name: formData["restaurantName"],
-            mobileNumber: formData["mobile"],
-            amount: 99900
-        }
 
+
+    const insertRestaurant = async () => {
         try {
-            const res = await axios.post("https://zesty-backend.onrender.com/payment/create-order", data);
-            console.log(res.data);
-
-
             const restaurantData = new FormData();
-
             Object.entries(formData).forEach(([key, value]) => {
                 if (key === "menuImg") {
                     formData["menuImg"].forEach((img) => {
@@ -48,11 +37,70 @@ export default function PartnerContract({ onBack }) {
             } else {
                 toast.error("err in inserting.");
             }
-            window.location.href = res.data.url;
+            window.location.href = "https://zesty-restaurant-phi.vercel.app/payment-success";
         } catch (error) {
             console.log(error);
+            toast.dark("error in inserting ad")
         }
+    }
 
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            const response = await fetch("https://zesty-backend.onrender.com/payment/order", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount: 99900 }),
+            });
+
+            const order = await response.json();
+
+            // Load Razorpay script dynamically before calling Razorpay
+            const loadScript = (src) => {
+                return new Promise((resolve) => {
+                    const script = document.createElement("script");
+                    script.src = src;
+                    script.onload = () => resolve(true);
+                    script.onerror = () => resolve(false);
+                    document.body.appendChild(script);
+                });
+            };
+
+            const isScriptLoaded = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+
+            if (!isScriptLoaded) {
+                toast.error("Razorpay SDK failed to load.");
+                return;
+            }
+
+            const options = {
+                key: "rzp_test_1DP5mmOlF5G5ag",
+                amount: 99900,
+                currency: order.currency,
+                name: "Zesty",
+                image: "/images/zesty-without-bg-black.png",
+                description: "Payment for ad",
+                order_id: order.id,
+                handler: (res) => {
+                    insertRestaurant();
+                    toast.success("Payment successful");
+                },
+                theme: {
+                    color: "#000"
+                },
+            };
+
+            const razorpay = new window.Razorpay(options);
+            razorpay.open();
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            console.error(error);
+            toast.error("Error in payment processing.");
+        }
     }
 
     return (

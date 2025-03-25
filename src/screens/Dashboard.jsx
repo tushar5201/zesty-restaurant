@@ -5,6 +5,7 @@ import { Col, Row } from 'react-bootstrap'
 import TotalOrdersCard from '../components/TotalOrdersCard'
 import axios from "axios"
 import Content from '../components/Content'
+import { useNavigate } from 'react-router-dom'
 
 const reducerRestaurant = (state, action) => {
     switch (action.type) {
@@ -27,6 +28,7 @@ export default function Dashboard() {
     });
 
     const restaurantId = localStorage.getItem("restaurantId");
+    const navigate = useNavigate();
 
     const fetchRestaurant = async () => {
         dispatchRestaurant({ type: 'FETCH_REQUEST' });
@@ -34,6 +36,7 @@ export default function Dashboard() {
             const restaurant = await axios.get(`https://zesty-backend.onrender.com/restaurant/get/${restaurantId}`);
             dispatchRestaurant({ type: 'FETCH_SUCCESS', payload: restaurant.data });
         } catch (error) {
+            navigate("/signinProcess");
             dispatchRestaurant({ type: 'FETCH_FAIL', payload: error.message });
         }
     };
