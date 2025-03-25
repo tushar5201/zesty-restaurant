@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Loading from '../components/Loading';
 import MessageBox from '../components/MessageBox';
+import { FileUploader } from "react-drag-drop-files";
 
 export default function AddMenuItem() {
     const [name, setName] = useState("");
@@ -20,6 +21,9 @@ export default function AddMenuItem() {
     const restaurantId = localStorage.getItem("restaurantId");
 
     const [loading, setLoading] = useState(false);
+
+    const fileTypes = ["JPG", "PNG", "GIF"];
+
 
     const submitHandler = async (e) => {
         setLoading(true);
@@ -139,9 +143,13 @@ export default function AddMenuItem() {
                             </Col>
                         </Row>
 
-                        <div className="form-floating mt-5 mb-2">
+                        {/* <div className="form-floating mt-5 mb-2">
                             <input type="file" accept='image/png, image/jpeg' name="image" onChange={(e) => setImage(e.target.files[0])} id="image" placeholder='Menu Item Image' className='in form-control' style={{ width: "100%" }} required />
                             <label style={{ color: "#222" }}>Menu Item Image</label>
+                        </div> */}
+
+                        <div className="mt-4 w-100 mb-2">
+                            <FileUploader handleChange={(e) => setImage(e)} name="image" types={fileTypes} />
                         </div>
                         {image && (
                             <div className="text-center">
@@ -266,8 +274,11 @@ export function UpdateMenu() {
         setLoading(true);
         try {
             let finalPrice = "";
-            if (price !== "") {
+            if (price !== "" && packagingCharge !== "") {
                 finalPrice = ((parseInt(price) + parseInt(packagingCharge)) + (parseInt(price) + parseInt(packagingCharge)) * 0.3).toString();
+            } else {
+                toast.dark("Fill Empty fields")
+                return;
             }
             const menuData = new FormData();
             menuData.append("id", id);

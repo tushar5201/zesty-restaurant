@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import Header from '../components/Header'
 import { Card, Container } from 'react-bootstrap'
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, UNSAFE_ErrorResponseImpl, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Loading from '../components/Loading';
@@ -20,20 +20,8 @@ export default function CreateAds() {
         setMobile(res.data.mobile);
     }
 
-    const submitHandler = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        getData();
-        const data = {
-            name: restaurantName,
-            mobileNumber: mobile,
-            amount: 19900
-        }
-
+    const insertAd = async () => {
         try {
-            const res = await axios.post("https://zesty-backend.onrender.com/payment/create-order", data);
-            console.log(res.data);
-
             const adData = new FormData();
             adData.append("image", image);
             adData.append("restaurantId", restaurantId);
@@ -46,13 +34,79 @@ export default function CreateAds() {
                 toast.error("err in inserting.");
                 setLoading(false);
             }
-            window.location.href = res.data.url;
+            // window.location.href = res.data.url;
+            window.location.href = "https://zesty-restaurant-phi.vercel.app/restaurant/ads";
         } catch (error) {
-            setLoading(false);
             console.log(error);
-            toast.error("err in inserting.");
+            toast.dark("error in inserting ad")
         }
     }
+
+    const submitHandler = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        getData();
+
+        if (image === "") {
+            toast.dark("Please provide image");
+            setLoading(false)
+            return;
+        }
+
+        try {
+            const response = await fetch("https://zesty-backend.onrender.com/payment/create-order", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount: 19900 }),
+            });
+
+            const order = await response.json();
+
+            // Load Razorpay script dynamically before calling Razorpay
+            const loadScript = (src) => {
+                return new Promise((resolve) => {
+                    const script = document.createElement("script");
+                    script.src = src;
+                    script.onload = () => resolve(true);
+                    script.onerror = () => resolve(false);
+                    document.body.appendChild(script);
+                });
+            };
+
+            const isScriptLoaded = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+
+            if (!isScriptLoaded) {
+                toast.error("Razorpay SDK failed to load.");
+                return;
+            }
+
+            const options = {
+                key: "rzp_test_1DP5mmOlF5G5ag",
+                amount: 19900,
+                currency: order.currency,
+                name: "Zesty",
+                image: "/images/zesty-without-bg-black.png",
+                description: "Payment for ad",
+                order_id: order.id,
+                handler: (res) => {
+                    insertAd();
+                    toast.success("Payment successful");
+                },
+                theme: {
+                    color: "#000"
+                },
+            };
+
+            const razorpay = new window.Razorpay(options);
+            razorpay.open();
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            console.error(error);
+            toast.error("Error in payment processing.");
+        }
+    };
+
     return (
         <div>
             <Header />
