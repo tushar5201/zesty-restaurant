@@ -71,7 +71,7 @@ export default function OTPForm({ onNext, phone, id }) {
 
     return (
         <div>
-            <Card style={{ backgroundColor: "#fcf8f3", width: "500px", padding: "40px", marginTop: "30%", borderRadius: "20px" }}>
+            <Card className='card1'>
                 <h2 style={{ color: "#000" }}>Enter OTP</h2>
                 <p style={{ color: "#aaa" }}>Enter OTP sent on number <strong style={{ color: "#000" }}>{phone.contact}</strong></p>
 

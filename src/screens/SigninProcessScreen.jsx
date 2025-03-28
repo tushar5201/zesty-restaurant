@@ -1,29 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Container, Navbar, Row } from 'react-bootstrap'
 import "../assets/css/signinProcess.css"
-import { Box, Button, Step, StepContent, StepLabel, Stepper, Typography } from "@mui/material";
+import { Box, Step, StepContent, StepLabel, Stepper, Typography } from "@mui/material";
 import RestaurantInformationForm from './SigninProcess/RestaurantInformationForm';
 import RestaurantDocumentsForm from './SigninProcess/RestaurantDocumentsForm';
 import MenuSetup from './SigninProcess/MenuSetup';
 import PartnerContract from './SigninProcess/PartnerContract';
-import { useNavigate } from 'react-router-dom';
 
 export default function SigninProcessScreen() {
 
-    const [activeStep, setActiveStep] = useState(0);
+    const [activeStep, setActiveStep] = useState(1);
     const [user, setUser] = useState(null);
-    // const restaurantId = JSON.stringify(localStorage.getItem("restaurantId"));
-    // // console.log(restaurantId);
-
-    // const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     if (restaurantId !== "" || restaurantId !== null) {
-    //         console.log(restaurantId);
-
-    //         navigate("/payment-failure");
-    //     }
-    // }, []);
 
     const handleNext = (data) => {
         setUser({ ...user, ...data });
@@ -63,7 +50,7 @@ export default function SigninProcessScreen() {
         <div style={{ backgroundColor: "#faf7f7" }}>
             <Navbar className="bg-body-tertiary navbar">
                 <Container>
-                    <Navbar.Brand style={{ fontSize: "25px", marginTop: "50px" }}>
+                    <Navbar.Brand style={window.innerWidth > 600 ? { fontSize: "25px", marginTop: "50px" } : {marginTop: "50px"}}>
                         <img
                             alt=""
                             src=".\images\zesty-without-bg-black.png"
@@ -75,34 +62,51 @@ export default function SigninProcessScreen() {
             </Navbar>
 
 
-            <Container style={{ marginTop: "50px", padding: "0 0 0 200px" }}>
+            <Container style={window.innerWidth >= 600 ? { marginTop: "50px", padding: "0 0 0 200px" } : {}}>
                 <Row>
                     <Col md={3} style={{ marginTop: "50px" }}>
                         <Box>
-                            <Stepper activeStep={activeStep} orientation='vertical' style={{ position: "fixed", width: "250px" }} sx={{
-                                '& .MuiStepIcon-root.Mui-active': {
-                                    color: 'black', // Change the color of the active step icon
-                                },
-                                '& .MuiStepIcon-root.Mui-completed': {
-                                    color: 'black', // Change the color of the completed step icon
-                                },
-                            }}>
-                                {steps.map((step, index) => (
-                                    <Step key={step.label} style={{ color: "red" }}>
-                                        <StepLabel>
-                                            <h6 style={{ marginLeft: "20px" }}><strong>{step.title}</strong></h6>
-                                        </StepLabel>
+                            {
+                                window.innerWidth <= 600 ?
+                                    <Stepper activeStep={activeStep} alternativeLabe sx={{
+                                        '& .MuiStepIcon-root.Mui-active': {
+                                            color: 'black', // Change the color of the active step icon
+                                        },
+                                        '& .MuiStepIcon-root.Mui-completed': {
+                                            color: 'black', // Change the color of the completed step icon
+                                        },
+                                    }} l>
+                                        {steps.map((label) => (
+                                            <Step key={label.label}>
+                                                <StepLabel>{label.label}</StepLabel>
+                                            </Step>
+                                        ))}
+                                    </Stepper>
+                                    :
+                                    <Stepper activeStep={activeStep} orientation='vertical' style={{ position: "fixed", width: "250px" }} sx={{
+                                        '& .MuiStepIcon-root.Mui-active': {
+                                            color: 'black', // Change the color of the active step icon
+                                        },
+                                        '& .MuiStepIcon-root.Mui-completed': {
+                                            color: 'black', // Change the color of the completed step icon
+                                        },
+                                    }}>
+                                        {steps.map((step, index) => (
+                                            <Step key={step.label} style={{ color: "red" }}>
+                                                <StepLabel>
+                                                    <h6 style={{ marginLeft: "20px" }}><strong>{step.title}</strong></h6>
+                                                </StepLabel>
 
-                                        <StepContent>
-                                            <p style={{ color: "#aaa", marginLeft: "20px" }}>{step.description}</p>
-                                        </StepContent>
-                                    </Step>
-                                ))}
-                            </Stepper>
-
+                                                <StepContent>
+                                                    <p style={{ color: "#aaa", marginLeft: "20px" }}>{step.description}</p>
+                                                </StepContent>
+                                            </Step>
+                                        ))}
+                                    </Stepper>
+                            }
                         </Box>
                     </Col>
-                    <Col style={{ marginLeft: "20px" }}>
+                    <Col style={window.innerWidth > 600 ? { marginLeft: "20px" } : {}}>
                         {activeStep === 0 && (<RestaurantInformationForm onNext={handleNext} />)}
                         {activeStep === 1 && (<RestaurantDocumentsForm onNext={handleNext} onBack={handleBack} />)}
                         {activeStep === 2 && (<MenuSetup onNext={handleNext} onBack={handleBack} />)}

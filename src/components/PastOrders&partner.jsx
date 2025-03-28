@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { Card, Col, Row } from 'react-bootstrap'
 import Loading from './Loading';
 import MessageBox from './MessageBox';
+import "../assets/css/totalOrdersCard.css"
 
 const reducerOrders = (state, action) => {
     switch (action.type) {

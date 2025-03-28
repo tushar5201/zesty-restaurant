@@ -79,16 +79,46 @@ export default function RestaurantInformationForm({ onNext }) {
     }
 
     const getLocation = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                setLatitude(position.coords.latitude);
-                setLongitude(position.coords.longitude);
-                setFormData({ ...formData, "latitude": position.coords.latitude, "longitude": position.coords.longitude });
-            }, (err) => {
-                console.log(err.message);
-            })
+  if (navigator.geolocation) {
+    const options = {
+      enableHighAccuracy: true,  // Try to use GPS if available
+      timeout: 10000,           // 10 seconds timeout
+      maximumAge: 0             // Don't use cached position
+    };
+    
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+        setFormData({ 
+          ...formData, 
+          latitude: position.coords.latitude, 
+          longitude: position.coords.longitude 
+        });
+      },
+      (err) => {
+        console.error("Geolocation error:", err.message);
+        // Handle different error cases
+        switch(err.code) {
+          case err.PERMISSION_DENIED:
+            alert("Location access was denied. Please enable permissions.");
+            break;
+          case err.POSITION_UNAVAILABLE:
+            alert("Location information is unavailable.");
+            break;
+          case err.TIMEOUT:
+            alert("The request to get location timed out.");
+            break;
+          default:
+            alert("An unknown error occurred.");
         }
-    }
+      },
+      options
+    );
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+}
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -102,8 +132,8 @@ export default function RestaurantInformationForm({ onNext }) {
 
     return (
         <div>
-            <h4 style={{ width: "250px", color: "#000" }}><strong>Restaurant Information</strong></h4>
             <Form>
+                <h4 style={{ width: "250px", color: "#000" }} className='form-h4'><strong>Restaurant Information</strong></h4>
                 <Card className='form-card'>
                     <h5>Basic Details</h5>
 
@@ -153,7 +183,7 @@ export default function RestaurantInformationForm({ onNext }) {
                         <Col>
                             <div className="form-floating">
                                 <input type="text" name="buildingName" value={formData["buildingName"]} onChange={(e) => setFormData({ ...formData, "buildingName": e.target.value })} placeholder="Building/Mall/Complex Name" className='in form-control' />
-                                <label style={{ color: "#222" }}>Building/Mall/Complex Name</label>
+                                <label style={{ color: "#222" }}>Building Name</label>
                             </div>
                         </Col>
                         <Col>
@@ -208,40 +238,40 @@ export default function RestaurantInformationForm({ onNext }) {
                                 </label>
                             </div>
                             <div className="form-check mt-2">
-                                <input className="form-check-input" type="checkbox" onChange={handleCheckChange} value="Tuesday" id="flexCheckDefault" />
-                                <label className="form-check-label ms-2" for="flexCheckDefault">
+                                <input className="form-check-input" type="checkbox" onChange={handleCheckChange} value="Tuesday" id="flexCheckDefault1" />
+                                <label className="form-check-label ms-2" for="flexCheckDefault1">
                                     Tuesday
                                 </label>
                             </div>
                             <div className="form-check mt-2">
-                                <input className="form-check-input" type="checkbox" onChange={handleCheckChange} value="Wednesday" id="flexCheckDefault" />
-                                <label className="form-check-label ms-2" for="flexCheckDefault">
+                                <input className="form-check-input" type="checkbox" onChange={handleCheckChange} value="Wednesday" id="flexCheckDefault2" />
+                                <label className="form-check-label ms-2" for="flexCheckDefault2">
                                     Wednesday
                                 </label>
                             </div>
                             <div className="form-check  mt-2">
-                                <input className="form-check-input" type="checkbox" onChange={handleCheckChange} value="Thursday" id="flexCheckDefault" />
-                                <label className="form-check-label ms-2" for="flexCheckDefault">
+                                <input className="form-check-input" type="checkbox" onChange={handleCheckChange} value="Thursday" id="flexCheckDefault3" />
+                                <label className="form-check-label ms-2" for="flexCheckDefault3">
                                     Thursday
                                 </label>
                             </div>
                         </Col>
                         <Col>
                             <div className="form-check mt-2">
-                                <input className="form-check-input" type="checkbox" onChange={handleCheckChange} value="Friday" id="flexCheckDefault" />
-                                <label className="form-check-label ms-2" for="flexCheckDefault">
+                                <input className="form-check-input" type="checkbox" onChange={handleCheckChange} value="Friday" id="flexCheckDefault4" />
+                                <label className="form-check-label ms-2" for="flexCheckDefault4">
                                     Friday
                                 </label>
                             </div>
                             <div className="form-check mt-2">
-                                <input className="form-check-input" type="checkbox" onChange={handleCheckChange} value="Saturday" id="flexCheckDefault" />
-                                <label className="form-check-label ms-2" for="flexCheckDefault">
+                                <input className="form-check-input" type="checkbox" onChange={handleCheckChange} value="Saturday" id="flexCheckDefault5" />
+                                <label className="form-check-label ms-2" for="flexCheckDefault5">
                                     Saturday
                                 </label>
                             </div>
                             <div className="form-check mt-2">
-                                <input className="form-check-input" type="checkbox" onChange={handleCheckChange} value="Sunday" id="flexCheckDefault" />
-                                <label className="form-check-label ms-2" for="flexCheckDefault">
+                                <input className="form-check-input" type="checkbox" onChange={handleCheckChange} value="Sunday" id="flexCheckDefault6" />
+                                <label className="form-check-label ms-2" for="flexCheckDefault6">
                                     Sunday
                                 </label>
                             </div>

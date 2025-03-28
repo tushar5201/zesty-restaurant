@@ -3,6 +3,7 @@ import { Carousel, CarouselItem, Col, Container, Row } from "react-bootstrap";
 import "../assets/css/login.css";
 import LoginForm from "../components/LoginForm";
 import OTPForm from "../components/OTPForm";
+import Header from "../components/Header"
 
 const Login = () => {
 
@@ -19,11 +20,12 @@ const Login = () => {
 
   return (
     <div>
-      <img src="./images/restro6.png" className="bg" alt="" />
+      <img src="./images/restro6.png" className="bg login_img" alt="" />
       <Container>
         {/* <h1 style={{color: "black"}}>Hello</h1> */}
+        <img src=".\images\zesty-without-bg-black.png" alt="" className="logo" style={{ display: "none" }} />
         <Row>
-          <Col style={{ height: "100%", textAlign: "center", marginTop: "6%" }}>
+          <Col style={{ height: "100%", textAlign: "center", marginTop: "6%" }} className="login_img">
             <img src=".\images\zesty-without-bg-black.png" alt="" style={{ width: "400px" }} />
 
             <p className="lead" style={{ color: "#000", marginTop: "-100px" }}>PARTNER WITH <strong>ZESTY!</strong></p>

@@ -30,7 +30,7 @@ export default function MenuSetup({ onNext, onBack }) {
 
     return (
         <div>
-            <h4 style={{ width: "250px", color: "#000" }}><strong>Menu Setup</strong></h4>
+            <h4 style={{ width: "250px", color: "#000" }} className='form-h4'><strong>Menu Setup</strong></h4>
 
             <Form onSubmit={handleSubmit}>
                 <Card className='form-card'>
