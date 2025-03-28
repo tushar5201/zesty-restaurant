@@ -34,7 +34,7 @@ export default function RestaurantDocumentsForm({ onNext, onBack }) {
 
     return (
         <div>
-            <h4 style={{ width: "250px", color: "#000" }}><strong>Restaurant Documents</strong></h4>
+            <h4 style={{ width: "250px", color: "#000" }} className='form-h4'><strong>Restaurant Documents</strong></h4>
             <Form onSubmit={handleSubmit}>
                 <Card className='form-card'>
                     <h5>Enter PAN & GSTIN Details</h5>

@@ -8,3 +8,17 @@
     padding: 15px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
+
+@media only screen and (max-width: 600px) {
+    h5 {
+        font-size: 1rem;
+    }
+
+    .graph-card{
+        margin: 0rem
+    }
+
+    .table>tbody>tr>td , .table>thead>tr>th {
+        font-size: 0.9rem;
+    }
+}

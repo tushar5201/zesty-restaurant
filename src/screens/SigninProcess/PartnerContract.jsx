@@ -57,7 +57,7 @@ export default function PartnerContract({ onBack }) {
 
     return (
         <div>
-            <h4 style={{ width: "250px", color: "#000" }}><strong>Partner Contract   </strong></h4>
+            <h4 style={{ width: "250px", color: "#000" }} className='form-h4'><strong>Partner Contract   </strong></h4>
 
             <Card className='form-card'>
                 <h5>Overview</h5>

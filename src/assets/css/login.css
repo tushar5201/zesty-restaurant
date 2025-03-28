@@ -28,3 +28,29 @@ h1 {
     background-color: #222;
     color: #fff;
 }
+
+.card1 {
+    background-color: #fcf8f3;
+    width: 500px;
+    padding: 40px;
+    margin-top: 30%;
+    border-radius: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+    .login_img {
+        display: none;
+        opacity: 0;
+    }
+
+    .logo {
+        display: block !important;
+        width: 150px !important;
+    }
+
+    .card1 {
+        margin-top: 0%;
+        width: 100%;
+        padding: 30px;
+    }
+}

@@ -37,7 +37,7 @@ export default function LoginForm({ onNext }) {
         setPhone(e.target.value.slice(0, 10));
     }
     return (
-        <Card style={{ backgroundColor: "#fcf8f3", width: "500px", padding: "40px", marginTop: "30%", borderRadius: "20px" }}>
+        <Card className='card1'>
             <h2 style={{ color: "#000" }}>Get Started</h2>
             <p style={{ color: "#aaa" }}>Enter a mobile number to continue</p>
 
