@@ -29,7 +29,7 @@ export default function AdsScreen() {
             <div style={{ width: "100%", padding: "0", margin: "0" }}>
                 <Header />
 
-                <div style={{ padding: "20px" }}>
+                <div style={{ padding: "15px" }}>
                     <h1>Ads</h1>
                     {
                         loading ? <Loading /> :
@@ -46,7 +46,7 @@ export default function AdsScreen() {
                                     <tbody>
                                         <tr>
                                             {/* <td><img src={`https://zesty-backend.onrender.com/ad/get-ad-image/${restaurantId}`} alt="" width={"600px"} /></td> */}
-                                            <td><img src={ad.image} alt={ad} srcset="" width={"600px"} /></td>
+                                            <td><img src={ad.image} alt={ad} srcset="" className='img-ad' /></td>
                                             <td><Link to={`/restaurant/update-ad/${ad._id}`} className="btn btn-primary">Edit</Link></td>
                                         </tr>
                                     </tbody>

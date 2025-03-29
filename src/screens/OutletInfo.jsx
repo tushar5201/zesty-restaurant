@@ -46,7 +46,7 @@ export default function OutletScreen() {
       <Sidebar id={6} />
       <div style={{ width: '100%', overflow: 'hidden' }}>
         <Header />
-        <div style={{ padding: '20px' }}>
+        <div style={{ padding: '15px' }}>
           <h2 style={{ margin: '15px 0 5px 20px' }}>Your Outlet Information</h2>
 
           {loading ? <Loading /> : error ? <MessageBox>{error}</MessageBox> :
@@ -60,7 +60,7 @@ export default function OutletScreen() {
               <tbody className='p-5'>
                 <tr>
                   <td>Restaurant Image</td>
-                  <td><img src={outlet.logoImg} width={500} alt="" srcset="" /></td>
+                  <td><img src={outlet.logoImg} width={500} className='img-outlet' alt="" srcset="" /></td>
                 </tr>
                 <tr>
                   <td>Restaurant Name</td>
@@ -99,7 +99,7 @@ export default function OutletScreen() {
                   <td>{outlet.veg}</td>
                 </tr>
                 <tr>
-                  <th>Banking Info</th>
+                  <th colSpan={2}>Banking Info</th>
                 </tr>
                 <tr>
                   <td>IFSC Code</td>
@@ -126,8 +126,8 @@ export default function OutletScreen() {
                   }</td>
                 </tr>
                 <tr>
-                  <td>
-                    <Link to="/restaurant/update-outlet" className='btn btn-dark w-50 align-items-center'>Edit Outlet</Link>
+                  <td colSpan={window.innerWidth < 600 ? 2 : 0}>
+                    <Link to="/restaurant/update-outlet" className='btn btn-dark w-50 align-items-center offset-2'>Edit Outlet</Link>
                   </td>
                 </tr>
               </tbody>

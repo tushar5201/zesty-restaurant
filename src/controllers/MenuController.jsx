@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Loading from '../components/Loading';
 import MessageBox from '../components/MessageBox';
+import "../assets/css/forms.css"
 
 export default function AddMenuItem() {
     const [name, setName] = useState("");
@@ -82,7 +83,7 @@ export default function AddMenuItem() {
             <Header />
 
             <Container>
-                <Card className='text-center mt-5 w-50 mx-auto p-5'>
+                <Card className='text-center mt-5 mx-auto p-5 form-card'>
                     <h3><u>Add Menu Item</u></h3>
 
                     <form>
@@ -103,9 +104,9 @@ export default function AddMenuItem() {
                             ))}
                         </select>
 
-                        <label htmlFor="" className='mt-4 float-start'>Food Type: </label>
+                        <label htmlFor="" className='mt-4 float-start'>Food Type: </label> {window.innerWidth < 600 ? <br /> : ""}
                         <Row className='mt-4'>
-                            <Col>
+                            <Col xs={12} md={6}>
                                 <a
                                     onClick={() => handleFoodType('Veg')}
                                     style={{
@@ -119,10 +120,9 @@ export default function AddMenuItem() {
                                     <img src="/images/vegSymbol.png" width={"30px"} alt="siuh" />{' '}
                                     Veg
                                 </a>
-
                             </Col>
 
-                            <Col>
+                            <Col className={window.innerWidth < 600 ? 'mt-4' : ""} xs={12} md={6}>
                                 <a
                                     onClick={() => handleFoodType('Non-Veg')}
                                     style={{
@@ -145,7 +145,7 @@ export default function AddMenuItem() {
                         </div>
                         {image && (
                             <div className="text-center">
-                                <img src={URL.createObjectURL(image)} alt='category' height={'200px'} />
+                                <img src={URL.createObjectURL(image)} alt='category' width={'80%'} />
                             </div>
                         )}
 
@@ -305,7 +305,7 @@ export function UpdateMenu() {
         <div style={{ width: "100%", padding: "0", margin: "0" }}>
             <Header />
             <Container>
-                <Card className='text-center mt-5 w-50 mx-auto p-5'>
+                <Card className='text-center mt-5 mx-auto p-5 form-card'>
                     <h3><u>Update Menu Item</u></h3>
                     {loading ? <Loading /> : error ? <MessageBox>{error}</MessageBox> :
                         <form action="">
@@ -327,7 +327,7 @@ export function UpdateMenu() {
 
                             <label htmlFor="" className='mt-4 float-start'>Food Type: </label>
                             <Row className='mt-4'>
-                                <Col>
+                                <Col  xs={12} md={6}>
                                     <a
                                         onClick={() => handleFoodType('Veg')}
                                         style={{
@@ -344,7 +344,7 @@ export function UpdateMenu() {
 
                                 </Col>
 
-                                <Col>
+                                <Col className={window.innerWidth < 600 ? 'mt-4' : ""} xs={12} md={6}>
                                     <a
                                         onClick={() => handleFoodType('Non-Veg')}
                                         style={{
@@ -365,10 +365,10 @@ export function UpdateMenu() {
                                 <input type="file" accept='image/png, image/jpeg' name="image" onChange={(e) => setImage(e.target.files[0])} id="image" placeholder='Menu Item Image' className='in form-control' style={{ width: "100%" }} />
                                 <label style={{ color: "#222" }}>Menu Item Image</label>
                             </div>
-                            <img src={menuItem.image} height={"200px"} alt={menuItem.name} />
+                            <img src={menuItem.image} width={"80%"} alt={menuItem.name} />
                             {image && (
                                 <div className="text-center">
-                                    <img src={URL.createObjectURL(image)} alt='category' height={'200px'} />
+                                    <img src={URL.createObjectURL(image)} alt='category' width={'80%'} />
                                 </div>
                             )}
 

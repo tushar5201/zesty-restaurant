@@ -75,42 +75,38 @@ export default function PastOrdersandPartners() {
     }, []);
 
     return (
-        <Row>
-            <Col>
-                <Card className='graph-card' style={{ margin: "20px 10px 0 20px", padding: "15px", }}>
-                    <h5>Last Orders</h5>
-                    <table className="table mt-3">
-                        <thead>
+        <Card className='graph-card' style={{ margin: "20px 10px 0 20px", padding: "15px", }}>
+            <h5>Last Orders</h5>
+            <table className="table mt-3">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Payment Mode</th>
+                        {/* <th scope="col">Restaurant</th> */}
+                        <th scope="col">Status</th>
+                        <th scope="col">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {loadingOrders ? <Loading /> : errorOrders ? <MessageBox>{errorOrders}</MessageBox> :
+                        orders.slice(0).reverse().map((order, index) => (
+                            index < 5 &&
                             <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Payment Mode</th>
-                                <th scope="col">Restaurant</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Amount</th>
+                                <th scope="row">{index + 1}</th>
+                                <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+                                <td>{order.paymentMode}</td>
+                                {/* <td>{order.restaurantName}</td> */}
+                                <td>{order.orderStatus === "Pending" || order.orderStatus === "Active" || order.orderStatus === "Prepared" ?
+                                    <span className='text-warning bg-warning bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>{order.orderStatus}</span>
+                                    : order.orderStatus === "Delivered" && <span className='text-success bg-success bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>{order.orderStatus}</span>
+                                }</td>
+                                <td>{order.totalAmountUser}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {loadingOrders ? <Loading /> : errorOrders ? <MessageBox>{errorOrders}</MessageBox> :
-                                orders.slice(0).reverse().map((order, index) => (
-                                    index < 5 &&
-                                    <tr>
-                                        <th scope="row">{index + 1}</th>
-                                        <td>{new Date(order.createdAt).toLocaleDateString()}</td>
-                                        <td>{order.paymentMode}</td>
-                                        <td>{order.restaurantName}</td>
-                                        <td>{order.orderStatus === "Pending" || order.orderStatus === "Active" || order.orderStatus === "Prepared" ?
-                                            <span className='text-warning bg-warning bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>{order.orderStatus}</span>
-                                            : order.orderStatus === "Delivered" && <span className='text-success bg-success bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>{order.orderStatus}</span>
-                                        }</td>
-                                        <td>{order.totalAmountUser}</td>
-                                    </tr>
-                                ))
-                            }
-                        </tbody>
-                    </table>
-                </Card>
-            </Col>
-        </Row>
+                        ))
+                    }
+                </tbody>
+            </table>
+        </Card>
     )
 }
