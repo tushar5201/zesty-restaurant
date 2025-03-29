@@ -96,3 +96,37 @@ header {
 .fa-solid {
     font-size: 20px;
 }
+
+@media only screen and (max-width: 600px) {
+    header {
+        display: flex;
+        width: 100%;
+    }
+
+    .fa-bars {
+        display: flex;
+        font-size: 30px;
+        color: var(--clr-black);
+    }
+
+    .img-logo {
+        width: 20px;
+        margin-left: 20px;
+    }
+
+    .nav-brand {
+        display: flex;
+        margin-top: -60px !important;
+        justify-content: center;
+        font-size: large !important;
+    }
+
+    .info-name {
+        /* margin-top: px; */
+        /* font-weight: 500;
+        font-size: medium !important;
+        text-transform: uppercase;
+        color: var(--clr-primary-light); */
+        display: none !important;
+    }
+}

@@ -40,7 +40,8 @@ ul {
   box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
 } */
 
-input, button {
+input,
+button {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -63,6 +64,7 @@ input {
   display: flex;
   min-height: 100vh;
 }
+
 /* button {
   background-color: #fff;
   color: #000;
@@ -74,3 +76,27 @@ button:hover {
   background-color: #444;
   color: #fff;
 } */
+
+.img-ad {
+  width: 600px;
+}
+
+@media only screen and (max-width: 600px) {
+
+  .table-menu>thead>tr>th,
+  .table-menu>tbody>tr>td {
+    font-size: 0.8rem;
+  }
+
+  .table-menu>tbody>tr>td>.btn {
+    padding: 7px;
+  }
+
+  .img-ad {
+    width: 100%;
+  }
+
+  .img-outlet {
+    width: 100%;
+  }
+}

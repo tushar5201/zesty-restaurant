@@ -33,13 +33,13 @@ export default function Header() {
                 <i className='fa fa-bars'></i>
             </button>
             <Container>
-                <Navbar.Brand style={{ fontSize: "25px", marginTop: "50px" }}>
+                <Navbar.Brand className='nav-brand' style={{ fontSize: "25px", marginTop: "50px" }}>
                     <img
                         alt="zesty"
                         src="/images/zesty-without-bg-black.png"
                         className="img-logo d-inline-block align-top"
                     />{' '}
-                    <strong style={{ marginLeft: "-40px" }}>Zesty</strong> for restaurants
+                    <strong style={{ marginLeft: "-40px" }}>Zesty</strong>&nbsp;for restaurants
                 </Navbar.Brand>
 
                 <NavDropdown className='user-info info-name' style={{ color: "black" }} title={restroName} id='dropdown'>

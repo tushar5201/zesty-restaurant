@@ -9,7 +9,7 @@ import PartnerContract from './SigninProcess/PartnerContract';
 
 export default function SigninProcessScreen() {
 
-    const [activeStep, setActiveStep] = useState(1);
+    const [activeStep, setActiveStep] = useState(0);
     const [user, setUser] = useState(null);
 
     const handleNext = (data) => {

@@ -84,10 +84,10 @@ export default function PastOrdersScreen() {
             <Sidebar id={3} />
             <div style={{ width: "100%", overflow: "hidden" }}>
                 <Header />
-                <div style={{ padding: "20px" }}>
+                <div style={{ padding: "15px" }}>
                     <h2>Past Orders</h2>
                     {loading ? <Loading /> : error ? <MessageBox>{error}</MessageBox> : (
-                        <table className='table mt-5'>
+                        <table className='table mt-5 w-100'>
                             <thead>
                                 <tr>
                                     <th>Order ID</th>

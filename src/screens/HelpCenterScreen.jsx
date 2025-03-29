@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../components/Loading';
+import "../assets/css/forms.css"
 
 export default function HelpCenterScreen() {
     const [name, setName] = useState("");
@@ -50,7 +51,7 @@ export default function HelpCenterScreen() {
 
                 <Container>
                     <h1 className='p-3'>Help Center</h1>
-                    <Card className='text-center mt-3 w-50 mx-auto p-5'>
+                    <Card className='text-center mt-3 mx-auto p-5 form-card'>
                         <div className="form-floating mt-3">
                             <input type="text" name="name" value={name} id="name" placeholder='name' className='in form-control' style={{ width: "100%" }} disabled />
                             <label style={{ color: "#222" }}>Enter Name</label>

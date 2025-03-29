@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../components/Loading';
 import MessageBox from "../components/MessageBox";
+import "../assets/css/forms.css"
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -96,7 +97,7 @@ export default function UpdateOutlet() {
         <div style={{ width: "100%", padding: "0", margin: "0" }}>
             <Header />
             <Container>
-                <Card className='text-center mt-5 w-50 mx-auto p-5'>
+                <Card className='text-center mt-5 mx-auto p-5 form-card'>
                     <h3><u>Update Outlet Info</u></h3>
                     {loading ? <Loading /> : error ? <MessageBox>{error}</MessageBox> :
                         <form action="">
@@ -105,10 +106,10 @@ export default function UpdateOutlet() {
                                 <input type="file" accept='image/png, image/jpeg' name="image" onChange={(e) => setLogoImg(e.target.files[0])} id="logoImg" placeholder='Menu Item Image' className='in form-control' style={{ width: "100%" }} />
                                 <label style={{ color: "#222" }}>Image</label>
                             </div>
-                            <img src={outlet.logoImg} height={"200px"} alt={outlet.name} />
+                            <img src={outlet.logoImg} width={"80%"} alt={outlet.name} />
                             {logoImg && (
                                 <div className="text-center">
-                                    <img src={URL.createObjectURL(logoImg)} alt='category' height={'200px'} />
+                                    <img src={URL.createObjectURL(logoImg)} alt='category' width={'80%'} />
                                 </div>
                             )}
 

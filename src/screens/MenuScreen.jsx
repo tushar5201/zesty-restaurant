@@ -75,7 +75,7 @@ export default function MenuScreen() {
             <div style={{ width: "100%", overflow: "hidden" }}>
                 <Header />
 
-                <div style={{ padding: "20px" }}>
+                <div style={{ padding: "15px" }}>
                     <Row>
                         <Col md={8}>
                             <h2 style={{ margin: "15px 0 5px 20px" }}>Menu</h2>
@@ -88,7 +88,7 @@ export default function MenuScreen() {
                         </Col>
                     </Row>
 
-                    <table className='table mt-3'>
+                    <table className='table mt-3 table-menu'>
                         <thead>
                             <tr>
                                 <th>Item Id</th>
@@ -105,7 +105,7 @@ export default function MenuScreen() {
                                     <tr key={i} style={{ verticalAlign: "middle" }}>
                                         <td>{i+1}</td>
                                         <td><h5>{menuItem.name}</h5></td>
-                                        <td><button onClick={() => handleShow(menuItem)} style={{ width: "100px" }} className='btn btn-outline-dark'>Details</button></td>
+                                        <td><button onClick={() => handleShow(menuItem)} style={{ width: "auto" }} className='btn btn-outline-dark'>Details</button></td>
                                         <td><Link to={`/restaurant/update-menu-item/${menuItem._id}`} className='btn btn-primary'>Update</Link></td>
                                         <td><button className='btn btn-danger' onClick={() => handleDelete(menuItem._id)}>Delete</button></td>
                                     </tr>

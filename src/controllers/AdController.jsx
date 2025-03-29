@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import Loading from '../components/Loading';
 import MessageBox from '../components/MessageBox';
+import "../assets/css/forms.css"
 
 export default function CreateAds() {
     const restaurantId = localStorage.getItem("restaurantId");
@@ -57,7 +58,7 @@ export default function CreateAds() {
         <div>
             <Header />
             <Container>
-                <Card className='text-center mt-5 w-50 mx-auto p-5'>
+                <Card className='text-center mt-5 mx-auto p-5 form-card'>
                     <h3><u>Create Advertisement</u></h3>
 
                     <form action="">
@@ -69,7 +70,7 @@ export default function CreateAds() {
                         <p className='text-muted text-start'>*Image should 1200x600 px or 1920x960 px (with high resolution)</p>
                         {image && (
                             <div className="text-center">
-                                <img src={URL.createObjectURL(image)} alt='category' height={'200px'} />
+                                <img src={URL.createObjectURL(image)} alt='category' width={'80%'} />
                             </div>
                         )}
                         {loading ? <Loading /> :
@@ -155,7 +156,7 @@ export function UpdateAd() {
         <div>
             <Header />
             <Container>
-                <Card className='text-center mt-5 w-50 mx-auto p-5'>
+                <Card className='text-center mt-5 mx-auto p-5 form-card'>
                     <h3><u>Update Advertisement</u></h3>
 
                     {loading ? <Loading /> : error ? <MessageBox>{error}</MessageBox> :
@@ -168,10 +169,10 @@ export function UpdateAd() {
                             <p className='text-muted text-start'>*Image should 1200x600 px or 1920x960 px (with high resolution)</p>
                             {image && (
                                 <div className="text-center">
-                                    <img src={URL.createObjectURL(image)} alt='category' height={'200px'} />
+                                    <img src={URL.createObjectURL(image)} alt='category' width={'80%'} />
                                 </div>
                             )}
-                            <img src={ad.image} alt={ad} srcset="" width={"400px"} /> <br />
+                            <img src={ad.image} alt={ad} srcset="" width={"80%"} /> <br />
                             {loading ? <Loading /> :
                                 <Link className='btn btn-dark mt-5' onClick={submitHandler}>Submit</Link>
                             }
