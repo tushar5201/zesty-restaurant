@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react'
 import { useReducer } from 'react';
 import { useEffect } from 'react';
-import { Card, Col, Row } from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
 import Loading from './Loading';
 import MessageBox from './MessageBox';
 import "../assets/css/totalOrdersCard.css"
@@ -20,30 +20,11 @@ const reducerOrders = (state, action) => {
     }
 };
 
-const reducerRestaurant = (state, action) => {
-    switch (action.type) {
-        case 'FETCH_REQUEST':
-            return { ...state, loading: true };
-        case 'FETCH_SUCCESS':
-            return { ...state, loading: false, restaurants: action.payload };
-        case 'FETCH_FAIL':
-            return { ...state, loading: false, error: action.payload };
-        default:
-            return state;
-    }
-};
-
 export default function PastOrdersandPartners() {
     const [{ loadingOrders, errorOrders, orders }, dispatchOrders] = useReducer(reducerOrders, {
         loading: true,
         error: '',
         orders: [],
-    });
-
-    const [{ loadingRestaurant, errorRestaurant, restaurants }, dispatchRestaurants] = useReducer(reducerRestaurant, {
-        loading: true,
-        error: '',
-        restaurants: [],
     });
 
     const restaurantId = localStorage.getItem("restaurantId");
@@ -59,19 +40,8 @@ export default function PastOrdersandPartners() {
         }
     };
 
-    const fetchRestaurants = async () => {
-        dispatchRestaurants({ type: 'FETCH_REQUEST' });
-        try {
-            const restaurants = await axios.get('https://zesty-backend.onrender.com/restaurant/get-all-restaurants');
-            dispatchRestaurants({ type: 'FETCH_SUCCESS', payload: restaurants.data });
-        } catch (error) {
-            dispatchRestaurants({ type: 'FETCH_FAIL', payload: error.message });
-        }
-    };
-
     useEffect(() => {
         fetchOrders();
-        fetchRestaurants();
     }, []);
 
     return (
@@ -99,7 +69,8 @@ export default function PastOrdersandPartners() {
                                 {/* <td>{order.restaurantName}</td> */}
                                 <td>{order.orderStatus === "Pending" || order.orderStatus === "Active" || order.orderStatus === "Prepared" ?
                                     <span className='text-warning bg-warning bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>{order.orderStatus}</span>
-                                    : order.orderStatus === "Delivered" && <span className='text-success bg-success bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>{order.orderStatus}</span>
+                                    : order.orderStatus === "Delivered" ? <span className='text-success bg-success bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>{order.orderStatus}</span>
+                                    : order.orderStatus === "Rejected" && <span className='text-danger bg-danger bg-opacity-25' style={{ padding: "5px", borderRadius: "5px" }}>{order.orderStatus}</span>
                                 }</td>
                                 <td>{order.totalAmountUser}</td>
                             </tr>

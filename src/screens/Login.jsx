@@ -34,13 +34,13 @@ const Login = () => {
 
             <Carousel prevIcon="" nextIcon="" style={{ height: "120px" }} slide={false} >
               <CarouselItem>
-                <h2 color="#000">Increase your online orders</h2>
+                <h2 style={{color: "#fff"}}>Increase your online orders</h2>
               </CarouselItem>
               <CarouselItem>
-                <h2 color="#000">Reach customers far away from you</h2>
+                <h2 style={{color: "#fff"}}>Reach customers far away from you</h2>
               </CarouselItem>
               <CarouselItem>
-                <h2 color="#000">Access to Zesty tools and support</h2>
+                <h2 style={{color: "#fff"}}>Access to Zesty tools and support</h2>
               </CarouselItem>
             </Carousel>
           </Col>
